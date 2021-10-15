@@ -15,14 +15,23 @@
 
 # Graphql/Typescript Code Pattern
 
-This is a based on the template repository for a Typescript-based Graphql micro-service.
+This is a template repository for a Typescript-based Graphql micro-service.
 
 This app contains an opinionated set of components for modern web development, including:
 
 
 ## Getting started
 
-1. Clone the newly created template to your computer
+1. Click the 'Use this template' button above or [this link](./generate) to generate a new repository
+   from this template.
+2. Clone the newly created template to your computer
+3. Update the project name in the `project.json` file and update the README with the following steps,
+   run from the root of your project directory:
+```bash
+mv README.md STARTER-KIT.md
+echo "# {project name}" > README.md
+```
+4. Add and commit the changes to your repo.
 
 ## Features
 
@@ -75,16 +84,7 @@ To run your application locally:
 npm run start
 ```
 
-Your application will be running at `http://localhost:3000`.  You can access the `/api-docs`, `/health`, `/hello`, and `/graphql` endpoints at the host.
-
-The graphql endpoint presents a query interface. To query via curl, POST the query like this:
-
-```bash
-curl --request POST \
-  --header 'content-type: application/json' \
-  --url http://localhost:3000/graphql \
-  --data '{"query":"query { __typename }"}'
-```
+Your application will be running at `http://localhost:3000`.  You can access the `/health` and `/appmetrics-dash` endpoints at the host.
 
 ## Next Steps
 

@@ -1,5 +1,5 @@
 {
-  "name": "template-node-typescript",
+  "name": "markstur-node-typescript",
   "version": "1.0.0",
   "org": "my-org",
   "description": "Code pattern for starting a typescript-based microservice",
@@ -85,6 +85,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ibm-garage-cloud/template-node-typescript.git"
+    "url": "https://github.com/IBM/markstur-node-typescript.git"
   }
 }
