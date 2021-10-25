@@ -47,8 +47,8 @@ export class TaskService implements TaskApi {
   async markAsCompleted(taskId: number): Promise<TaskModel> {
     this.logger.info('Marking task completed: ' + taskId);
 
-    const task = tasks.find(task => {
-      return task.id === taskId;
+    const task = tasks.find(t => {
+      return t.id === taskId;
     });
 
     if (!task) {

@@ -1,7 +1,7 @@
 import {Inject} from 'typescript-ioc';
 import {Arg, FieldResolver, Query, Resolver, Root} from 'type-graphql';
 
-import {Project, Task} from '../schemas';
+import {Project} from '../schemas';
 import {ProjectModel, TaskModel} from '../models';
 import {resolverManager} from './_resolver-manager';
 import {ProjectApi, TaskApi} from '../services';

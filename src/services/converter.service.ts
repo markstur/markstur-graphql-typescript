@@ -124,7 +124,6 @@ export class ConverterService implements ConverterApi {
     remainder = remainder - (iv * IV);  // Just subtract the one, if any
 
     let i = Math.trunc(remainder / I);
-    remainder = remainder % I;
 
     let ret : string = ''
     ret += 'M'.repeat(m)

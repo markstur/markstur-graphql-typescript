@@ -13,7 +13,6 @@ import http = require('http');
 import path = require('path');
 import cors = require('cors');
 import {ApolloServer} from 'apollo-server-express';
-import {Config} from 'apollo-server-core/src/types';
 import {GraphQLSchema} from 'graphql';
 import {buildGraphqlSchema} from './schema';
 
