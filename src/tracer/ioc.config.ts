@@ -1,7 +1,7 @@
 import {ContainerConfiguration} from 'typescript-ioc';
 
 import {TracerApi} from './tracer.api';
-import jaegerTracerFactory from './jaeger-tracer.factory';
+import jaegerTracerFactory from './jaegerTracerFactory';
 
 const config: ContainerConfiguration[] = [
   {

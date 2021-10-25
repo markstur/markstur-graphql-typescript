@@ -1,6 +1,6 @@
 import {Container, ObjectFactory} from 'typescript-ioc';
 import {initTracerFromEnv, JaegerTracer, TracingConfig, TracingOptions, ZipkinB3TextMapCodec} from 'jaeger-client'
-import {FORMAT_HTTP_HEADERS, initGlobalTracer, Tracer} from 'opentracing';
+import {FORMAT_HTTP_HEADERS, initGlobalTracer} from 'opentracing';
 
 import {LoggerApi} from '../logger';
 

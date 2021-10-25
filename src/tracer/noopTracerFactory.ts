@@ -4,11 +4,11 @@ import {initGlobalTracer, Tracer} from 'opentracing';
 let tracer: Tracer;
 function initTracer(): Tracer {
 
-  const tracer: Tracer = new Tracer();
+  const newTracer: Tracer = new Tracer();
 
-  initGlobalTracer(tracer);
+  initGlobalTracer(newTracer);
 
-  return tracer;
+  return newTracer;
 }
 
 const noopTracerFactory: ObjectFactory = () => {
