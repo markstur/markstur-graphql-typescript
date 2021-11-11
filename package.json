@@ -1,5 +1,5 @@
 {
-  "name": "markstur-node-typescript",
+  "name": "markstur-graphql-typescript",
   "version": "1.0.0",
   "org": "my-org",
   "description": "Code pattern for starting a typescript-based microservice",
@@ -71,7 +71,7 @@
     "axios": "^0.24.0",
     "babel-jest": "^27.1.1",
     "easygraphql-tester": "^6.0.1",
-    "jest": "^27.1.1",
+    "jest": "^27.3.1",
     "jest-plugin-context": "^2.9.0",
     "jest-sonar-reporter": "^2.0.0",
     "pino-pretty": "^7.0.0",
