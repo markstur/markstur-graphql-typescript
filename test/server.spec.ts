@@ -17,7 +17,7 @@ describe('server', () => {
       });
 
       afterEach(async () => {
-        expect(await apiServer.stop()).toEqual(true);
+        await apiServer.stop();
       });
 
       context('when apiContext provided', () => {
