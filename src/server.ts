@@ -36,7 +36,7 @@ export class ApiServer {
 
   constructor(private readonly app: express.Application = express(), apiContext = configApiContext) {
 
-    this.app.use(opentracingMiddleware({tracer: this.tracer}));
+    // this.app.use(opentracingMiddleware({tracer: this.tracer}));
     this.logger.apply(this.app);
     this.app.use(cors());
 
