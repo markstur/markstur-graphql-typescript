@@ -1,16 +1,11 @@
 import {Container} from 'typescript-ioc';
 
 import {HelloWorldService} from '../../src/services/hello-world.service';
-import {ApiServer} from '../../src/server';
-import {buildApiServer} from '../helper';
 
 describe('Hello World service', () =>{
 
-  let app: ApiServer;
   let service: HelloWorldService;
   beforeAll(() => {
-    app = buildApiServer();
-
     service = Container.get(HelloWorldService);
   });
 

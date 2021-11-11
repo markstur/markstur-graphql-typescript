@@ -1,3 +1,4 @@
+import { doesNotMatch } from 'assert';
 import {Application} from 'express';
 import {default as request} from 'supertest';
 import {Container, Scope} from 'typescript-ioc';
@@ -11,11 +12,13 @@ class MockHelloWorldService implements HelloWorldApi {
 
 describe('hello-world.controller', () => {
 
+  let apiServer;
   let app: Application;
   let mockGreeting: jest.Mock;
 
-  beforeEach(() => {
-    const apiServer = buildApiServer();
+  beforeEach(async () => {
+    apiServer = buildApiServer();
+    expect(await apiServer.start()).toBe(apiServer);
 
     app = apiServer.getApp();
 
@@ -23,6 +26,10 @@ describe('hello-world.controller', () => {
 
     const mockService: HelloWorldApi = Container.get(HelloWorldApi);
     mockGreeting = mockService.greeting as jest.Mock;
+  });
+
+  afterEach(async () => {
+    expect(await apiServer.stop()).toEqual(true);
   });
 
   test('canary validates test infrastructure', () => {
