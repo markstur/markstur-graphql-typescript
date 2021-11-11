@@ -11,13 +11,8 @@ export const fetchData = async query => {
   return await axios.get(url);
 };
  
-// const request = require('supertest');
-
-import { ProjectServiceConfig, ProjectService } from '../../src/services/project.service';
+import { ProjectServiceConfig } from '../../src/services/project.service';
 import { HelloWorldService } from '../../src/services/hello-world.service';
-// import { query } from 'express';
-
-// const fetch = require('node-fetch');
 
 const npmPackage = require(join(process.cwd(), 'package.json'));
 
@@ -34,7 +29,7 @@ describe('project.service', () => {
   beforeAll(() => {
     provider = new Pact({
       consumer: consumerName,
-      provider: 'project-svc',
+      provider: 'hello-world-svc',
       port,
       log: resolve(process.cwd(), "logs", "pact.log"),
       dir: resolve(process.cwd(), "pacts"),
@@ -61,13 +56,11 @@ describe('project.service', () => {
 
   
 
-  context('given listProjects()', () => {
+  context('given hello-world', () => {
+
     context('when called', () => {
       
       const expectedResult: string = "Hello, World!";
-
-      // const projectsQuery: string = "{ projects { tasks { id } } }";
-
       beforeEach(() => {
         console.log("in before each"+ provider.server);
         return provider.addInteraction({
@@ -90,11 +83,10 @@ describe('project.service', () => {
         });
       });
 
-      test('should return project data', async () => {
+      test('should return hello-world data', async () => {
 
-        // const response = await fetch('https://localhost:3000/hello-world');
         const result = await fetchData('hello-world');
-        console.log("RESULT.DATA", result.data);
+
         expect(result.data).toEqual([expectedResult]);
       });
 
