@@ -22,7 +22,8 @@ import { HelloWorldService } from '../../src/services/hello-world.service';
 
 const npmPackage = require(join(process.cwd(), 'package.json'));
 
-const consumerName = npmPackage.name;
+// const consumerName = npmPackage.name;
+const providerName = npmPackage.name;
 
 describe('project.service', () => {
   test('canary verifies test infrastructure', () => {
@@ -34,8 +35,10 @@ describe('project.service', () => {
   let provider: Pact;
   beforeAll(() => {
     provider = new Pact({
-      consumer: consumerName,
-      provider: 'hello-world-svc',
+      // consumer: consumerName,
+      consumer: 'hello-world-client',
+      // provider: 'hello-world-svc',
+      provider: providerName,
       port,
       log: resolve(process.cwd(), "logs", "pact.log"),
       dir: resolve(process.cwd(), "pacts"),
