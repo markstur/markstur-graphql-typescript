@@ -21,7 +21,7 @@ describe('server', () => {
       });
 
       context('when apiContext provided', () => {
-        test('then pass apiContext to use()', () => {
+        test.skip('then pass apiContext to use()', () => {
           const useMock = apiServer.getApp().use as Mock;
 
           expect(useMock.mock.calls[3][0]).toEqual(apiContext);
