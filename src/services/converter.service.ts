@@ -50,7 +50,7 @@ sparseN2R[50] = 'LC';
 sparseN2R[90] = 'XC';
 sparseN2R[400] = 'CD';
 sparseN2R[900] = 'CM';
-console.log("SPARSE: ", sparseN2R);
+// console.log("SPARSE: ", sparseN2R);
 
 // const r2nMap : Map<string, number> = new Map([
   // 'I':1,II:2,III:3,IV:4,V:5,VI:6,VII:7,VIII:8,IX:9,X:10,
@@ -140,7 +140,7 @@ export class ConverterService implements ConverterApi {
     ret += 'IV'.repeat(iv)
     ret += 'I'.repeat(i)
 
-    console.log("RETURNING: ", ret, " FOR ", n);
+    // console.log("RETURNING: ", ret, " FOR ", n);
     return ret
   }
 
@@ -218,12 +218,5 @@ export class ConverterService implements ConverterApi {
     let res = sparseN2R[n];
 
     return res || n < 0 || n >= 4000 || !Number.isInteger(n) ? res : this.numberToRomanWithMath(n)
-    // if (n < 0 || n >= 4000 || !Number.isInteger(n)) {
-      // return;
-    // }
-    // return res
-    // return Number.isInteger(n) ? n : this.leftToRight(roman);  // isInteger() here distinguishes 0 from undefined
-    // return "nulla";
-    // return n.toString();
   }
 }

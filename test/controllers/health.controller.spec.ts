@@ -6,11 +6,17 @@ import {buildApiServer} from '../helper';
 describe('health.controller', () => {
 
   let app: Application;
+  let apiServer;
 
-  beforeEach(() => {
-    const apiServer = buildApiServer();
+  beforeEach(async () => {
+    apiServer = buildApiServer();
+    expect(await apiServer.start()).toBe(apiServer);
 
     app = apiServer.getApp();
+  });
+
+  afterEach(async () => {
+    expect(await apiServer.stop()).toEqual(true);
   });
 
   test('canary validates test infrastructure', () => {
