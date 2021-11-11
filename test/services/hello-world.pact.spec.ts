@@ -57,10 +57,10 @@ describe('project.service', () => {
   
 
   context('given hello-world', () => {
+
     context('when called', () => {
       
       const expectedResult: string = "Hello, World!";
-
       beforeEach(() => {
         console.log("in before each"+ provider.server);
         return provider.addInteraction({
@@ -86,6 +86,7 @@ describe('project.service', () => {
       test('should return hello-world data', async () => {
 
         const result = await fetchData('hello-world');
+
         expect(result.data).toEqual([expectedResult]);
       });
 

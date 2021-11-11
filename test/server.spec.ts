@@ -16,6 +16,10 @@ describe('server', () => {
         apiServer = buildApiServer(apiContext);
       });
 
+      afterEach(async () => {
+        expect(await apiServer.stop()).toEqual(true);
+      });
+
       context('when apiContext provided', () => {
         test('then pass apiContext to use()', () => {
           const useMock = apiServer.getApp().use as Mock;
