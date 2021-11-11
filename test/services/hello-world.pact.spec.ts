@@ -8,7 +8,13 @@ export const API = 'http://localhost:3000/';
 export const fetchData = async query => {
   const url = `${API}/${query}`;
  
-  return await axios.get(url);
+  return await axios.get(url,
+    {
+      headers: {
+          'Content-Type': 'application/json',
+           Accept: 'application/json, text/plain, */*'
+      }
+    });
 };
  
 import { ProjectServiceConfig } from '../../src/services/project.service';
@@ -56,7 +62,7 @@ describe('project.service', () => {
 
   
 
-  context('given hello-world', () => {
+  context('given hello', () => {
 
     context('when called', () => {
       
@@ -65,10 +71,10 @@ describe('project.service', () => {
         console.log("in before each"+ provider.server);
         return provider.addInteraction({
           state: 'base state',
-          uponReceiving: 'a request for stock items',
+          uponReceiving: 'a request for hello',
           withRequest: {
             method: 'GET',
-            path: '/hello-world',
+            path: '/hello',
             headers: {
               'Accept': 'application/json, text/plain, */*',
             }
@@ -76,18 +82,18 @@ describe('project.service', () => {
           willRespondWith: {
             status: 200,
             headers: {
-              'Content-Type': 'application/json'
+              "content-type" : "text/html; charset=utf-8",
             },
-            body: Matchers.eachLike(expectedResult),
+            body: Matchers.string(expectedResult),
           }
         });
       });
 
-      test('should return hello-world data', async () => {
+      test('should return hello world in data', async () => {
 
-        const result = await fetchData('hello-world');
+        const result = await fetchData('hello');
 
-        expect(result.data).toEqual([expectedResult]);
+        expect(result.data).toEqual(expectedResult);
       });
 
       afterEach(() => {
