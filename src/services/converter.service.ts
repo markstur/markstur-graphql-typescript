@@ -1,6 +1,7 @@
 import {ConverterApi} from './converter.api';
 import {Inject} from 'typescript-ioc';
 import {LoggerApi} from '../logger';
+import {Errors} from 'typescript-rest';
 
 const M = 1000;  // my
 const CM = 900;
@@ -151,13 +152,13 @@ export class ConverterService implements ConverterApi {
     for (var i = 0; i < roman.length; i++) {
       let n: number = r2nMap[roman.charAt(i)]
       if (!n) {
-        return;
+        throw new Errors.BadRequestError();
       }
       // Look ahead for subtraction like IX
       let next: string = roman.charAt(i+1)
       if (!next) {
         if (n > last) {
-          return;  // Cannot go up
+          throw new Errors.BadRequestError("Cannot go up");
         }
         // last = n;  // Done
         ret += n;
@@ -165,15 +166,17 @@ export class ConverterService implements ConverterApi {
       else {
         let m = r2nMap[next];
         if (!m) {
-          return;
+          throw new Errors.BadRequestError("Cannot go up");
         }
         else if (m > n) {
           // TODO: This needs some limits on how it is used.
           if (m === V && m >= last) {
-            return;  // Cannot go up or do VIV
+            // Cannot go up or do VIV
+            throw new Errors.BadRequestError("Cannot go up");
           }
           else if (m === X && m > last) {
-            return;  // Cannot go up, but can do XIX
+            // Cannot go up, but can do XIX
+            throw new Errors.BadRequestError("Cannot go up");
           }
           ret += m;
           ret -= n;
@@ -182,7 +185,7 @@ export class ConverterService implements ConverterApi {
         }
         else {
           if (n > last) {
-            return;  // Cannot go up
+            throw new Errors.BadRequestError("Cannot go up");
           }
           last = n;
           ret += n;
@@ -192,31 +195,34 @@ export class ConverterService implements ConverterApi {
 
     // Numbers over 3999 are not valid with our rules
     if (ret > 3999) {
-      return;
+      throw new Errors.BadRequestError();
     }
 
     // Reject if it had 4 in a row of anything
     let fours = ['MMMM', 'DDDD', 'CCCC', 'LLLL', 'XXXX', 'VVVV', 'IIII'];
     if (fours.some(four => roman.includes(four))) {
-      return;
+      throw new Errors.BadRequestError();
     }
 
     return ret;
   }
 
-  async toNumber(roman: string): Promise<number> {
+  toNumber(roman: string): number {
     this.logger.info(`toNumber from: ${roman}`);
     if (!roman) {
-      return;
+      throw new Errors.BadRequestError();
     }
     let n: number = r2nMap[roman];
     return Number.isInteger(n) ? n : this.leftToRight(roman);  // isInteger() here distinguishes 0 from undefined
   }
 
-  async toRoman(n: number): Promise<string> {
+  toRoman(n: number): string {
     this.logger.info('toRoman from: ${n}');
-    let res = sparseN2R[n];
 
-    return res || n < 0 || n >= 4000 || !Number.isInteger(n) ? res : this.numberToRomanWithMath(n)
+    if (!Number.isInteger(n) || n < 0 || n >= 4000) {
+      throw new Errors.BadRequestError();
+    }
+
+    return sparseN2R[n] || this.numberToRomanWithMath(n);
   }
 }

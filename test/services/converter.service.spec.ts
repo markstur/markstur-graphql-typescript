@@ -1,4 +1,5 @@
 import {Container} from 'typescript-ioc';
+import { BadRequestError } from 'typescript-rest/dist/server/model/errors';
 
 import {ConverterService} from '../../src/services/converter.service';
 
@@ -94,49 +95,49 @@ describe('Converter service', () =>{
   describe("More than 3 in a row is not allowed", () => {
     context('when given MXXXXVI', () => {
       test('toNumber(MXXXXVI) should result in undefined', async () => {
-        expect(await service.toNumber("MXXXXVI")).toBe(undefined);
+        await expect(service.toNumber("MXXXXVI")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(MMMM) should result in undefined', async () => {
-        expect(await service.toNumber("MMMM")).toBe(undefined);
+        await expect(service.toNumber("MMMM")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(MMMMX) should result in undefined', async () => {
-        expect(await service.toNumber("MMMMX")).toBe(undefined);
+        await expect(service.toNumber("MMMMX")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(DDDD) should result in undefined', async () => {
-        expect(await service.toNumber("DDDD")).toBe(undefined);
+        await expect(service.toNumber("DDDD")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(DDDDX) should result in undefined', async () => {
-        expect(await service.toNumber("DDDDX")).toBe(undefined);
+        await expect(service.toNumber("DDDDX")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(CCCC) should result in undefined', async () => {
-        expect(await service.toNumber("CCCC")).toBe(undefined);
+        await expect(service.toNumber("CCCC")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(CCCCX) should result in undefined', async () => {
-        expect(await service.toNumber("CCCCX")).toBe(undefined);
+        await expect(service.toNumber("CCCCX")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(LLLL) should result in undefined', async () => {
-        expect(await service.toNumber("LLLL")).toBe(undefined);
+        await expect(service.toNumber("LLLL")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(LLLLX) should result in undefined', async () => {
-        expect(await service.toNumber("LLLLX")).toBe(undefined);
+        await expect(service.toNumber("LLLLX")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(XXXX) should result in undefined', async () => {
-        expect(await service.toNumber("XXXX")).toBe(undefined);
+        await expect(service.toNumber("XXXX")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(XXXXV) should result in undefined', async () => {
-        expect(await service.toNumber("XXXXV")).toBe(undefined);
+        await expect(service.toNumber("XXXXV")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(VVVV) should result in undefined', async () => {
-        expect(await service.toNumber("VVVV")).toBe(undefined);
+        await expect(service.toNumber("VVVV")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(VVVVI) should result in undefined', async () => {
-        expect(await service.toNumber("VVVVI")).toBe(undefined);
+        await expect(service.toNumber("VVVVI")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(XIIII) should result in undefined', async () => {
-        expect(await service.toNumber("XIIII")).toBe(undefined);
+        await expect(service.toNumber("XIIII")).rejects.toThrow(BadRequestError);
       });
       test('toNumber(IIII) should result in undefined', async () => {
-        expect(await service.toNumber("IIII")).toBe(undefined);
+        await expect(service.toNumber("IIII")).rejects.toThrow(BadRequestError);
       });
     });
   });
@@ -144,7 +145,7 @@ describe('Converter service', () =>{
   describe("Must decrease going left", () => {
     context('when given XXXVIV', () => {
       test('toNumber(XXXVIV) should result in undefined', async () => {
-        expect(await service.toNumber("XXXVIV")).toBe(undefined);
+        await expect(service.toNumber("XXXVIV")).rejects.toThrow(BadRequestError);
       });
     });
   });
@@ -164,25 +165,25 @@ describe('Converter service', () =>{
   describe('Given INVALID toNumber(string)', () => {
     context('when invalid strings/characters are provided', () => {
       test('undefined returns undefined', async () => {
-        expect(await service.toNumber(undefined)).toEqual(undefined);
+        await expect(service.toNumber(undefined)).rejects.toThrow(BadRequestError);
       });
       test('empty string returns undefined', async () => {
-        expect(await service.toNumber("")).toEqual(undefined);
+        await expect(service.toNumber("")).rejects.toThrow(BadRequestError);
       });
       test('"A" returns undefined', async () => {
-        expect(await service.toNumber("A")).toEqual(undefined);
+        await expect(service.toNumber("A")).rejects.toThrow(BadRequestError);
       });
       test('"XZI" returns undefined', async () => {
-        expect(await service.toNumber("XZI")).toEqual(undefined);
+        await expect(service.toNumber("XZI")).rejects.toThrow(BadRequestError);
       });
       test('"X I" returns undefined', async () => {
-        expect(await service.toNumber("X I")).toEqual(undefined);
+        await expect(service.toNumber("X I")).rejects.toThrow(BadRequestError);
       });
       test('"X.I" returns undefined', async () => {
-        expect(await service.toNumber("X I")).toEqual(undefined);
+        await expect(service.toNumber("X I")).rejects.toThrow(BadRequestError);
       });
       test('"XvI" returns undefined', async () => {
-        expect(await service.toNumber("X I")).toEqual(undefined);
+        await expect(service.toNumber("X I")).rejects.toThrow(BadRequestError);
       });
     });
   });
@@ -190,16 +191,16 @@ describe('Converter service', () =>{
   describe('Given OUT-OF-RANGE toRoman(n)', () => {
     context('when out-of-range numbers are provided', () => {
       test('-99999999 returns undefined', async () => {
-        expect(await service.toRoman(-99999999)).toEqual(undefined);
+        await expect(service.toRoman(-99999999)).rejects.toThrow(BadRequestError);
       });
       test('-1 returns undefined', async () => {
-        expect(await service.toRoman(-1)).toEqual(undefined);
+        await expect(service.toRoman(-1)).rejects.toThrow(BadRequestError);
       });
       test('99999999 returns undefined', async () => {
-        expect(await service.toRoman(99999999)).toEqual(undefined);
+        await expect(service.toRoman(99999999)).rejects.toThrow(BadRequestError);
       });
       test('4000 returns undefined', async () => {
-        expect(await service.toRoman(4000)).toEqual(undefined);
+        await expect(service.toRoman(4000)).rejects.toThrow(BadRequestError);
       });
     });
   });
@@ -207,10 +208,10 @@ describe('Converter service', () =>{
   describe('Given NOT-AN-INTEGER toRoman(n)', () => {
     context('when non-integer numbers are provided', () => {
       test('-0.9 returns undefined', async () => {
-        expect(await service.toRoman(-0.9)).toEqual(undefined);
+        expect(service.toRoman(-0.9)).rejects.toThrow(BadRequestError);
       });
       test('9.9 returns undefined', async () => {
-        expect(await service.toRoman(9.9)).toEqual(undefined);
+        expect(service.toRoman(9.9)).rejects.toThrow(BadRequestError);
       });
     });
   });
@@ -235,7 +236,7 @@ describe('Converter service', () =>{
       test.skip.each(Array.from(Array(4000).keys()))(
         'toNumber(toRoman(n)) should result in self n=%s',
         async (n) => {
-          expect(await service.toNumber(await service.toRoman(n))).toBe(n);
+          expect(await service.toNumber((await service.toRoman(n))['value'])).toBe(n);
         }
       );
     });

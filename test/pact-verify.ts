@@ -22,6 +22,16 @@ const pactBrokerUrl = process.env.PACTBROKER_URL || opts.pactBrokerUrl;
 
 async function buildOptions(): Promise<VerifierOptions> {
 
+    // add this to the Verifier opts
+    const stateHandlers = {
+        "base state": () => {
+            console.log("BASE STATE: no setup needed");
+        },
+        "other state": () => {
+            console.log("OTHER STATE: setup here when needed");
+        },
+    }
+
     const pactUrls = await listPactFiles(path.join(process.cwd(), 'pacts'));
     if (!pactBrokerUrl && pactUrls.length === 0) {
         console.log('Nothing to test. Pact Broker url not set and no pact files found');
@@ -31,12 +41,13 @@ async function buildOptions(): Promise<VerifierOptions> {
     const options: VerifierOptions = Object.assign(
       {},
       opts,
+      { stateHandlers },
       argv,
       pactBrokerUrl
         ? {pactBrokerUrl}
         : {pactUrls},
       {
-          provider: config.name,
+          provider: 'markstur-api-provider',
           providerVersion: config.version,
           publishVerificationResult: true,
       },
