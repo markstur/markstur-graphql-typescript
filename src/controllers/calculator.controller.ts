@@ -36,6 +36,12 @@ export class CalculatorController {
         return operandArray[0];  // No math, just echo.
     }
 
-    return this.converter.toRoman(this.calculator.doMath(operator, numberArray))
+    const calculated = this.calculator.doMath(operator, numberArray);
+    if (calculated.length == 3) {
+      return `${this.converter.toRoman(calculated[0])} (${this.converter.toRoman(calculated[1])}/${this.converter.toRoman(calculated[2])})}`
+    }
+    else {
+      return this.converter.toRoman(calculated[0]);
+    }
   }
 }
