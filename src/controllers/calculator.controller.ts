@@ -14,6 +14,7 @@ export class CalculatorController {
   calculator: CalculatorApi;
   @Inject
   converter: ConverterApi;
+
   @Inject
   _baseLogger: LoggerApi;
 
@@ -38,5 +39,4 @@ export class CalculatorController {
     }
 
     return this.converter.toRoman(this.calculator.doMath(operator, numberArray))
-  }
 }
