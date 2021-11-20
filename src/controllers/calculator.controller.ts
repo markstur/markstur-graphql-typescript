@@ -4,8 +4,6 @@ import {ConverterApi} from '../services';
 import {CalculatorApi} from '../services';
 import {LoggerApi} from '../logger';
 import {Errors} from 'typescript-rest';
-import { UNARY_OPERATORS } from '@babel/types';
-import { transformFromAstSync } from '@babel/core';
 
 @Path('/calculator')
 export class CalculatorController {
@@ -39,4 +37,5 @@ export class CalculatorController {
     }
 
     return this.converter.toRoman(this.calculator.doMath(operator, numberArray))
+  }
 }
