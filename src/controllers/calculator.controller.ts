@@ -1,15 +1,20 @@
 import {GET, Path, PathParam, QueryParam} from 'typescript-rest';
 import {Inject} from 'typescript-ioc';
-// import {ConverterApi} from '../services';
+import {ConverterApi} from '../services';
+import {CalculatorApi} from '../services';
 import {LoggerApi} from '../logger';
 import {Errors} from 'typescript-rest';
 import { UNARY_OPERATORS } from '@babel/types';
+import { transformFromAstSync } from '@babel/core';
 
 @Path('/calculator')
 export class CalculatorController {
 
-  // @Inject
-  // service: ConverterApi;
+  @Inject
+  calculator: CalculatorApi;
+  @Inject
+  converter: ConverterApi;
+
   @Inject
   _baseLogger: LoggerApi;
 
@@ -27,15 +32,11 @@ export class CalculatorController {
     }
 
     const operandArray = operands.split(',');
+    const numberArray = operandArray.map(s => this.converter.toNumber(s))
 
-    if (operandArray.includes('')) {
-        throw new Errors.BadRequestError("Found empty string operand");
+    if (operandArray.length === 1) {
+        return operandArray[0];  // No math, just echo.
     }
 
-    if (operandArray.length > 1) {
-        throw new Errors.NotImplementedError("TODO more than one operand");
-    }
-
-    return operandArray[0];
-  }
+    return this.converter.toRoman(this.calculator.doMath(operator, numberArray))
 }

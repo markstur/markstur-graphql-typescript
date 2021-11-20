@@ -24,7 +24,8 @@ describe('calculator.controller', () => {
   });
 
   const smoothOperators = ['add', 'sub', 'mult', 'div'];
-  const anyOneOperand = 'any-one-operand';
+  const badOperand = 'invalid-operand';
+  const goodOperand = 'MMXXI';
 
   describe('when given calculator/<operator> with no operands', () => {
     it.each(smoothOperators)(
@@ -37,17 +38,29 @@ describe('calculator.controller', () => {
     );
   });
 
-  describe('when given a single "operands" value', () => {
+  describe('when given a single VALID "operands" value', () => {
     it.each(smoothOperators)(
-        `/api/calculator/%s?operands=${anyOneOperand} should return the operands value`,
+        `/api/calculator/%s?operands=${goodOperand} should return the operands value`,
         async (o) => {
             await request(app)
                 .get(`/calculator/${o}`)
-                .query(`operands=${anyOneOperand}`)
+                .query(`operands=${goodOperand}`)
                 .expect(200)
                 .then((response) => {
-                    expect(response.text).toEqual(anyOneOperand);
+                    expect(response.text).toEqual(goodOperand);
                 })
+        }
+    );
+  });
+
+  describe('when given a single INVALID "operands" value', () => {
+    it.each(smoothOperators)(
+        `/api/calculator/%s?operands=${badOperand} should throw 400`,
+        async (o) => {
+            await request(app)
+                .get(`/calculator/${o}`)
+                .query(`operands=${badOperand}`)
+                .expect(400)
         }
     );
   });
