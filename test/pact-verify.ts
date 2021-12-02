@@ -47,7 +47,7 @@ async function buildOptions(): Promise<VerifierOptions> {
         ? {pactBrokerUrl}
         : {pactUrls},
       {
-          provider: 'markstur-api-provider',
+          provider: 'markstur-calculator',
           providerVersion: config.version,
           publishVerificationResult: true,
       },
