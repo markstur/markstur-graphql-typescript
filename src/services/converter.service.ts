@@ -9,7 +9,6 @@ const D = 500; // dear
 const CD = 400;
 const C = 100; // cat
 const XC = 90; //
-const LC = 50; //
 const L = 50; // loves
 const XL = 40;
 const X = 10; // extra
@@ -47,7 +46,6 @@ sparseN2R[C] = 'C';
 sparseN2R[D] = 'D';
 sparseN2R[M] = 'M';
 sparseN2R[40] = 'XL';
-sparseN2R[50] = 'LC';
 sparseN2R[90] = 'XC';
 sparseN2R[400] = 'CD';
 sparseN2R[900] = 'CM';
@@ -100,9 +98,6 @@ export class ConverterService implements ConverterApi {
     let c = Math.trunc(remainder / C);
     remainder = remainder % C;
 
-    let lc = Math.trunc(remainder / LC);
-    remainder = remainder - (lc * LC);  // Just subtract the one, if any
-
     let xc = Math.trunc(remainder / XC);
     remainder = remainder - (xc * XC);  // Just subtract the one, if any
 
@@ -132,7 +127,6 @@ export class ConverterService implements ConverterApi {
     ret += 'D'.repeat(d)
     ret += 'CD'.repeat(cd)
     ret += 'C'.repeat(c)
-    ret += 'LC'.repeat(lc)
     ret += 'L'.repeat(l)
     ret += 'XL'.repeat(xl)
     ret += 'X'.repeat(x)
