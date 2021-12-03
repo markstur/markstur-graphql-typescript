@@ -22,23 +22,27 @@ export class CalculatorController {
 
   @Path(':operator')
   @GET
-  operate(@PathParam('operator') operator: string, @QueryParam('operands') operands: string = ''): string {
+  async operate(@PathParam('operator') operator: string, @QueryParam('operands') operands: string = ''): Promise<string> {
 
     const operators = ['add', 'sub', 'mult', 'div'];
     if (!operators.includes(operator)) {
-        throw new Errors.NotFoundError(`There is no operator "${operator}"`);
+      throw new Errors.NotFoundError(`There is no operator "${operator}"`);
     }
 
     const operandArray = operands.split(',');
-    const numberArray = operandArray.map(s => this.converter.toNumber(s))
-
     if (operandArray.length === 1) {
-        return operandArray[0];  // No math, just echo.
+      await this.converter.toNumber(operandArray[0]);  // Just to validate it
+      return operandArray[0];  // No math needed, just echo the valid single operand.
     }
+
+    const promiseArray = Promise.all(operandArray.map(s => this.converter.toNumber(s)));
+    const numberArray = await promiseArray;
 
     const calculated = this.calculator.doMath(operator, numberArray);
     if (calculated.length == 3) {
-      return `${this.converter.toRoman(calculated[0])} (${this.converter.toRoman(calculated[1])}/${this.converter.toRoman(calculated[2])})}`
+      const promiseConverted = Promise.all([this.converter.toRoman(calculated[0]), this.converter.toRoman(calculated[1]), this.converter.toRoman(calculated[2])]);
+      const converted = await promiseConverted;
+      return `${converted[0]} (${converted[1]}/${converted[2]})`;
     }
     else {
       return this.converter.toRoman(calculated[0]);

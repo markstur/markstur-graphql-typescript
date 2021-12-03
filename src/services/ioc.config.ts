@@ -1,6 +1,8 @@
 import {ContainerConfiguration, Scope} from 'typescript-ioc';
 import {HelloWorldApi} from './hello-world.api';
 import {HelloWorldService} from './hello-world.service';
+import {CalculatorApi} from './calculator.api';
+import {CalculatorService} from './calculator.service';
 import {ConverterApi} from './converter.api';
 import {ConverterService} from './converter.service';
 import {ProjectApi} from './project.api';
@@ -27,6 +29,11 @@ const config: ContainerConfiguration[] = [
   {
     bind: ConverterApi,
     to: ConverterService,
+    scope: Scope.Singleton,
+  },
+  {
+    bind: CalculatorApi,
+    to: CalculatorService,
     scope: Scope.Singleton,
   },
 ];

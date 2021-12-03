@@ -1,5 +1,6 @@
 import {Application} from 'express';
 import {default as request} from 'supertest';
+import supertest from 'supertest';
 
 import {buildApiServer} from '../helper';
 
@@ -57,19 +58,22 @@ describe('calculator.controller', () => {
     it.each(smoothOperators)(
         `/api/calculator/%s?operands=${badOperand} should throw 400`,
         async (o) => {
-            await request(app)
+            await supertest(app)
                 .get(`/calculator/${o}`)
                 .query(`operands=${badOperand}`)
-                .expect(400)
+                .then((response) => {
+                    expect(response.status).toBe(400);
+                })
         }
     );
   });
 
   describe("when given a bogus operator", () => {
     it('returns 404', async () => {
-        await request(app)
-            .get('/calculator/bogus')
-            .expect(404)
+        await supertest(app).get('/calculator/bogus').then((response) => {
+            expect(response.status).toBe(404);
+            expect(response.text).toContain('NotFoundError');  // Error page
+        })
     });
   });
 });

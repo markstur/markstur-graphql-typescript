@@ -1,5 +1,5 @@
 import {Container} from 'typescript-ioc';
-import { BadRequestError } from 'typescript-rest/dist/server/model/errors';
+import {BadRequestError, InternalServerError} from 'typescript-rest/dist/server/model/errors';
 
 import {ConverterService} from '../../src/services/converter.service';
 
@@ -94,58 +94,58 @@ describe('Converter service', () =>{
 
   describe("More than 3 in a row is not allowed", () => {
     context('when given MXXXXVI', () => {
-      test('toNumber(MXXXXVI) should result in throw 400', () => {
-        expect(() => service.toNumber("MXXXXVI")).toThrow(BadRequestError);
+      test('toNumber(MXXXXVI) should result in throw 400', async () => {
+        await expect(service.toNumber("MXXXXVI")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(MMMM) should result in throw 400', () => {
-        expect(() => service.toNumber("MMMM")).toThrow(BadRequestError);
+      test('toNumber(MMMM) should result in throw 400', async () => {
+        await expect(service.toNumber("MMMM")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(MMMMX) should result in throw 400', () => {
-        expect(() => service.toNumber("MMMMX")).toThrow(BadRequestError);
+      test('toNumber(MMMMX) should result in throw 400', async () => {
+        await expect(service.toNumber("MMMMX")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(DDDD) should result in throw 400', () => {
-        expect(() => service.toNumber("DDDD")).toThrow(BadRequestError);
+      test('toNumber(DDDD) should result in throw 400', async () => {
+        await expect(service.toNumber("DDDD")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(DDDDX) should result in throw 400', () => {
-        expect(() => service.toNumber("DDDDX")).toThrow(BadRequestError);
+      test('toNumber(DDDDX) should result in throw 400', async () => {
+        await expect(service.toNumber("DDDDX")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(CCCC) should result in throw 400', () => {
-        expect(() => service.toNumber("CCCC")).toThrow(BadRequestError);
+      test('toNumber(CCCC) should result in throw 400', async () => {
+        await expect(service.toNumber("CCCC")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(CCCCX) should result in throw 400', () => {
-        expect(() => service.toNumber("CCCCX")).toThrow(BadRequestError);
+      test('toNumber(CCCCX) should result in throw 400', async () => {
+        await expect(service.toNumber("CCCCX")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(LLLL) should result in throw 400', () => {
-        expect(() => service.toNumber("LLLL")).toThrow(BadRequestError);
+      test('toNumber(LLLL) should result in throw 400', async () => {
+        await expect(service.toNumber("LLLL")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(LLLLX) should result in throw 400', () => {
-        expect(() => service.toNumber("LLLLX")).toThrow(BadRequestError);
+      test('toNumber(LLLLX) should result in throw 400', async () => {
+        await expect(service.toNumber("LLLLX")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(XXXX) should result in throw 400', () => {
-        expect(() => service.toNumber("XXXX")).toThrow(BadRequestError);
+      test('toNumber(XXXX) should result in throw 400', async () => {
+        await expect(service.toNumber("XXXX")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(XXXXV) should result in throw 400', () => {
-        expect(() => service.toNumber("XXXXV")).toThrow(BadRequestError);
+      test('toNumber(XXXXV) should result in throw 400', async () => {
+        await expect(service.toNumber("XXXXV")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(VVVV) should result in throw 400', () => {
-        expect(() => service.toNumber("VVVV")).toThrow(BadRequestError);
+      test('toNumber(VVVV) should result in throw 400', async () => {
+        await expect(service.toNumber("VVVV")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(VVVVI) should result in throw 400', () => {
-        expect(() => service.toNumber("VVVVI")).toThrow(BadRequestError);
+      test('toNumber(VVVVI) should result in throw 400', async () => {
+        await expect(service.toNumber("VVVVI")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(XIIII) should result in throw 400', () => {
-        expect(() => service.toNumber("XIIII")).toThrow(BadRequestError);
+      test('toNumber(XIIII) should result in throw 400', async () => {
+        await expect(service.toNumber("XIIII")).rejects.toThrow(BadRequestError);
       });
-      test('toNumber(IIII) should result in throw 400', () => {
-        expect(() => service.toNumber("IIII")).toThrow(BadRequestError);
+      test('toNumber(IIII) should result in throw 400', async () => {
+        await expect(service.toNumber("IIII")).rejects.toThrow(BadRequestError);
       });
     });
   });
 
   describe("Must decrease going left", () => {
     context('when given XXXVIV', () => {
-      test('toNumber(XXXVIV) should result in throw 400', () => {
-        expect(() => service.toNumber("XXXVIV")).toThrow(BadRequestError);
+      test('toNumber(XXXVIV) should result in throw 400', async () => {
+        await expect(service.toNumber("XXXVIV")).rejects.toThrow(BadRequestError);
       });
     });
   });
@@ -160,58 +160,56 @@ describe('Converter service', () =>{
   // TODO: If a lower value digit is written to the right of a higher value digit, it is added.
   // TODO: Only I, X, and C can be used as subtractive numerals.
 
-
-  //
   describe('Given INVALID toNumber(string)', () => {
     context('when invalid strings/characters are provided', () => {
-      test('undefined returns throw 400', () => {
-        expect(() => service.toNumber(undefined)).toThrow(BadRequestError);
+      test('undefined returns throw 400', async () => {
+        await expect(service.toNumber(undefined)).rejects.toThrow(BadRequestError);
       });
-      test('empty string returns throw 400', () => {
-        expect(() => service.toNumber("")).toThrow(BadRequestError);
+      test('empty string returns throw 400', async () => {
+        await expect(service.toNumber("")).rejects.toThrow(BadRequestError);
       });
-      test('"A" returns throw 400', () => {
-        expect(() => service.toNumber("A")).toThrow(BadRequestError);
+      test('"A" returns throw 400', async () => {
+        await expect(service.toNumber("A")).rejects.toThrow(BadRequestError);
       });
-      test('"XZI" returns throw 400', () => {
-        expect(() => service.toNumber("XZI")).toThrow(BadRequestError);
+      test('"XZI" returns throw 400', async () => {
+        await expect(service.toNumber("XZI")).rejects.toThrow(BadRequestError);
       });
-      test('"X I" returns throw 400', () => {
-        expect(() => service.toNumber("X I")).toThrow(BadRequestError);
+      test('"X I" returns throw 400', async () => {
+        await expect(service.toNumber("X I")).rejects.toThrow(BadRequestError);
       });
-      test('"X.I" returns throw 400', () => {
-        expect(() => service.toNumber("X I")).toThrow(BadRequestError);
+      test('"X.I" returns throw 400', async () => {
+        await expect(service.toNumber("X.I")).rejects.toThrow(BadRequestError)
       });
-      test('"XvI" returns throw 400', () => {
-        expect(() => service.toNumber("X I")).toThrow(BadRequestError);
+      test('"XvI" returns throw 400', async () => {
+        await expect(service.toNumber("X I")).rejects.toThrow(BadRequestError);
       });
     });
   });
 
   describe('Given OUT-OF-RANGE toRoman(n)', () => {
     context('when out-of-range numbers are provided', () => {
-      test('-99999999 returns throw 400', () => {
-        expect(() => service.toRoman(-99999999)).toThrow(BadRequestError);
+      test('-99999999 returns throw 400', async () => {
+        await expect(service.toRoman(-99999999)).rejects.toThrow(BadRequestError);
       });
-      test('-1 returns throw 400', () => {
-        expect(() => service.toRoman(-1)).toThrow(BadRequestError);
+      test('-1 returns throw 400', async () => {
+        await expect(service.toRoman(-1)).rejects.toThrow(BadRequestError);
       });
-      test('99999999 returns throw 400', () => {
-        expect(() => service.toRoman(99999999)).toThrow(BadRequestError);
+      test('99999999 returns throw 400', async () => {
+        await expect(service.toRoman(99999999)).rejects.toThrow(BadRequestError);
       });
-      test('4000 returns throw 400', () => {
-        expect(() => service.toRoman(4000)).toThrow(BadRequestError);
+      test('4000 returns throw 400', async () => {
+        await expect(service.toRoman(4000)).rejects.toThrow(BadRequestError);
       });
     });
   });
 
   describe('Given NOT-AN-INTEGER toRoman(n)', () => {
     context('when non-integer numbers are provided', () => {
-      test('-0.9 returns throw 400', () => {
-        expect(() => service.toRoman(-0.9)).toThrow(BadRequestError);
+      test('-0.9 returns throw 400', async () => {
+        await expect(service.toRoman(-0.9)).rejects.toThrow(BadRequestError);
       });
-      test('9.9 returns throw 400', () => {
-        expect(() => service.toRoman(9.9)).toThrow(BadRequestError);
+      test('9.9 returns throw 400', async () => {
+        await expect(service.toRoman(9.9)).rejects.toThrow(BadRequestError);
       });
     });
   });
@@ -220,23 +218,20 @@ describe('Converter service', () =>{
   describe('DOT-ZERO floats are okay??? toRoman(n.0)', () => {
     context('when non-integer numbers are provided', () => {
       test('0.0 is not undefined', async () => {
-        expect(service.toRoman(0.0)).not.toEqual(undefined);
+        await expect(service.toRoman(0.0)).resolves.toEqual('nulla');
       });
       test('1.0 is not undefined', async () => {
-        expect(service.toRoman(1.0)).not.toEqual(undefined);
-      });
-      test('1.000 is not undefined', async () => {
-        expect(service.toRoman(1.000)).not.toEqual(undefined);
+        await expect(service.toRoman(1.0)).resolves.toEqual('I');
       });
     });
   });
 
   describe('INVERSE FUNCTIONS SO n == toNumber(toRoman(n))', () => {
-    context('0-39 toRoman and back toNumber', () => { // HINT: try 3999!
-      test.each(Array.from(Array(40).keys()))(
+    context('0.. toRoman and back toNumber', () => { // HINT: try 4000!
+      test.each(Array.from(Array(4).keys()))(
         'toNumber(toRoman(n)) should result in self n=%s',
-        (n) => {
-          expect(service.toNumber((service.toRoman(n)))).toBe(n);
+        async (n) => {
+          await expect(service.toNumber(await service.toRoman(n))).resolves.toBe(n);
         }
       );
     });

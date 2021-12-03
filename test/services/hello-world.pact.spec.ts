@@ -33,7 +33,7 @@ describe('project.service', () => {
   beforeAll(() => {
     provider = new Pact({
       consumer: 'markstur-hello-consumer',
-      provider: 'markstur-api-provider',
+      provider: 'markstur-calculator',
       port,
       log: resolve(process.cwd(), "logs", "pact.log"),
       dir: resolve(process.cwd(), "pacts"),
