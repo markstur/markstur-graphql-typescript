@@ -1,8 +1,8 @@
 {
-  "name": "markstur-graphql-typescript",
+  "name": "markstur-calculator",
   "version": "1.0.0",
-  "org": "my-org",
-  "description": "Code pattern for starting a typescript-based microservice",
+  "org": "IBM",
+  "description": "Roman numeral calculator REST services",
   "main": "index.js",
   "config": {
     "protocol": "http",
@@ -31,7 +31,7 @@
     "sonarqube:scan": "npm run test && ts-node test/sonarqube-scan"
   },
   "author": "",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
     "apollo-server-express": "^3.3.0",
     "class-validator": "^0.13.1",
@@ -86,6 +86,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/IBM/markstur-node-typescript.git"
+    "url": "https://github.com/markstur/markstur-graphql-typescript.git"
   }
 }
