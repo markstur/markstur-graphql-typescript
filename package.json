@@ -16,7 +16,8 @@
   },
   "scripts": {
     "clean": "rimraf dist",
-    "test": "jest --coverage --runInBand --forceExit",
+    "test": "jest --coverage --runInBand --detectOpenHandles",
+    "test:forceExit": "jest --coverage --runInBand --forceExit",
     "tdd": "jest --watch",
     "prebuild": "npm run clean",
     "build": "tsc",

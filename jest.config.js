@@ -23,3 +23,10 @@ module.exports = {
     "jest-plugin-context/setup"
   ],
 };
+
+CONVERTER_PORT= '3332'
+process.env = Object.assign(process.env, {
+  CONVERTER_PORT,
+  CONVERTER_URL: `http://localhost:${CONVERTER_PORT}`,
+  PORT: '3331'
+});

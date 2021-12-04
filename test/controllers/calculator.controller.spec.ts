@@ -3,21 +3,170 @@ import {default as request} from 'supertest';
 import supertest from 'supertest';
 
 import {buildApiServer} from '../helper';
+import {Pact} from "@pact-foundation/pact";
+import {resolve} from "path";
 
 describe('calculator.controller', () => {
 
   let app: Application;
   let apiServer;
 
-  beforeEach(async () => {
+  const converterPort = process.env.CONVERTER_PORT || '9992';
+  let converterPact: Pact;
+
+  beforeAll(async () => {
+      converterPact = new Pact({
+          consumer: 'markstur-calculator',
+          provider: 'markstur-converter',
+          port: parseInt(converterPort),
+          log: resolve(process.cwd(), "logs", "pact.log"),
+          dir: resolve(process.cwd(), "pacts"),
+      });
+      await converterPact.setup();
+
+      const n2r = {
+          '1': 'I',
+          '3': 'III',
+          '89': 'LXXXIX',
+          '111': 'CXI',
+          '3000': 'MMM',
+      }
+      const r2n = {
+          'I': 1,
+          'V': 5,
+          'C': 100,
+          'VI': 6,
+          'MMXXI': 2021,
+          'MMMCMXCIX': 3999,
+      }
+      const baseState = 'base state';
+      const roman2021 = 'MMXXI';
+      const promisedInteractions = [];
+      for ( const [n, r] of Object.entries(n2r)) {
+          promisedInteractions.push(
+              converterPact.addInteraction({
+                  state: baseState,
+                  uponReceiving: `a GET request for converter/to-roman?value=${n}`,
+                  withRequest: {
+                      method: 'GET',
+                      path: `/converter/to-roman`,
+                      query: `value=${n}`,
+                  },
+                  willRespondWith: {
+                      status: 200,
+                      body: r,
+                  }
+              })
+          )
+      }
+      for ( const [r, n] of Object.entries(r2n)) {
+          promisedInteractions.push(
+              converterPact.addInteraction({
+                  state: baseState,
+                  uponReceiving: `a GET request for converter/to-number?value=${r}`,
+                  withRequest: {
+                      method: 'GET',
+                      path: `/converter/to-number`,
+                      query: `value=${r}`,
+                  },
+                  willRespondWith: {
+                      status: 200,
+                      body: n,
+                  }
+              })
+          )
+      }
+      promisedInteractions.push(
+          converterPact.addInteraction({
+              state: baseState,
+              uponReceiving: 'a GET request for converter/to-number with INVALID operand',
+              withRequest: {
+                  method: 'GET',
+                  path: `/converter/to-number`,
+                  query: `value=${badOperand}`,
+              },
+              willRespondWith: {
+                  status: 400,
+              }
+          })
+      )
+      promisedInteractions.push(
+          converterPact.addInteraction({
+              state: baseState,
+              uponReceiving: 'a GET request for converter/to-number with EMPTY VALUE',
+              withRequest: {
+                  method: 'GET',
+                  path: `/converter/to-number`,
+                  query: `value=`,
+              },
+              willRespondWith: {
+                  status: 400,
+              }
+          })
+      )
+      promisedInteractions.push(
+          converterPact.addInteraction({
+              state: baseState,
+              uponReceiving: `a GET request for converter/to-roman with a number > 3999`,
+              withRequest: {
+                  method: 'GET',
+                  path: `/converter/to-roman`,
+                  query: `value=4005`,
+              },
+              willRespondWith: {
+                  status: 400,
+              }
+          })
+      )
+      promisedInteractions.push(
+          converterPact.addInteraction({
+              state: baseState,
+              uponReceiving: `a GET request for converter/to-roman with a negative number`,
+              withRequest: {
+                  method: 'GET',
+                  path: `/converter/to-roman`,
+                  query: `value=-5`,
+              },
+              willRespondWith: {
+                  status: 400,
+              }
+          })
+      )
+
+      /*
+      promisedInteractions.push(
+          converterPact.addInteraction({
+              state: baseState,
+              uponReceiving: `a GET request for converter/to-roman"`,
+              withRequest: {
+                  method: 'GET',
+                  path: `/converter/to-roman`,
+                  query: `value=0`,
+              },
+              willRespondWith: {
+                  status: 200,
+                  body: 'nulla',
+              }
+          })
+      )
+       */
+
+      await Promise.all(promisedInteractions);
+
     apiServer = buildApiServer();
     expect(await apiServer.start()).toBe(apiServer);
 
     app = apiServer.getApp();
   });
 
-  afterEach(async () => {
-    expect(await apiServer.stop()).toEqual(true);
+  afterAll(async () => {
+        expect(await apiServer.stop()).toEqual(true);
+        console.log("in afterAll, going to close and finalize");
+        // TODO: Test the app (controller) or the service in a Container?
+        // await server.close((err) => {
+        // console.log('server closed')
+        // })
+        await converterPact.verify().finally(() => converterPact.finalize());
   });
 
   test('canary validates test infrastructure', () => {
@@ -68,7 +217,38 @@ describe('calculator.controller', () => {
     );
   });
 
-  describe("when given a bogus operator", () => {
+  describe('when given a multiple VALID "operands" value', () => {
+      const expected = { 'add': 'CXI', 'sub': 'LXXXIX', 'mult': 'MMM', 'div': 'III (I/III)' }
+        it.each(smoothOperators)(
+            `/api/calculator/%s?operands=C,V,VI should be...`,
+            async (o) => {
+                await supertest(app)
+                    .get(`/calculator/${o}`)
+                    .query(`operands=C,V,VI`)
+                    .then((response) => {
+                        expect(response.status).toBe(200);
+                        expect(response.text).toBe(expected[o]);
+                    })
+            }
+        );
+  });
+
+    describe('when the result is too big or negative', () => {
+        it('returns 400 when > 3999', async () => {
+            await supertest(app).get('/calculator/add?operands=MMMCMXCIX,VI').then((response) => {
+                expect(response.status).toBe(400);
+                expect(response.text).toContain('BadRequestError');  // Error page
+            })
+        });
+        it('returns 400 when negative', async () => {
+            await supertest(app).get('/calculator/sub?operands=I,VI').then((response) => {
+                expect(response.status).toBe(400);
+                expect(response.text).toContain('BadRequestError');  // Error page
+            })
+        });
+    });
+
+    describe("when given a bogus operator", () => {
     it('returns 404', async () => {
         await supertest(app).get('/calculator/bogus').then((response) => {
             expect(response.status).toBe(404);

@@ -3,7 +3,7 @@ import {Container} from 'typescript-ioc';
 import {Matchers, Pact} from '@pact-foundation/pact';
 import axios from 'axios';
  
-export const API = 'http://localhost:3000/';
+export const API = 'http://localhost:8000/';
  
 export const fetchData = async query => {
   const url = `${API}/${query}`;
@@ -24,11 +24,10 @@ const npmPackage = require(join(process.cwd(), 'package.json'));
 
 describe('project.service', () => {
   test('canary verifies test infrastructure', () => {
-    console.log("in test infrastructure");
     expect(true).toEqual(true);
   });
 
-  const port = 3000;
+  const port = 8000;
   let provider: Pact;
   beforeAll(() => {
     provider = new Pact({
@@ -38,13 +37,11 @@ describe('project.service', () => {
       log: resolve(process.cwd(), "logs", "pact.log"),
       dir: resolve(process.cwd(), "pacts"),
     });
-    console.log("in before all, provider setup");
     return provider.setup();
   },30000);
 
   let classUnderTest: HelloWorldService;
   beforeEach(() => {
-    console.log("in before each---35");
     Container.bind(ProjectServiceConfig).factory(() => ({
         baseUrl: `http://localhost:${port}`
         
@@ -54,7 +51,6 @@ describe('project.service', () => {
   });
 
   afterAll(() => {
-    console.log("in afterAll, going to finalize");    
     return provider.finalize();
   });
 
@@ -66,7 +62,6 @@ describe('project.service', () => {
       
       const expectedResult: string = "Hello, World!";
       beforeEach(() => {
-        console.log("in before each"+ provider.server);
         return provider.addInteraction({
           state: 'base state',
           uponReceiving: 'a request for hello',
