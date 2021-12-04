@@ -27,9 +27,8 @@ export class ConverterService implements ConverterApi {
           const axiosResponse: AxiosResponse = await axios.get(`${converterUrl}/converter/to-roman?value=${n}`);
           return axiosResponse.data;
       } catch(error) {
-          const e = {...error};
-          if (e.response?.status === 400) {
-              throw new BadRequestError();
+          if (error.response?.status === 400) {
+              throw new BadRequestError(error.response.data?.error);
           }
           else {
               throw new InternalServerError();
