@@ -9,6 +9,8 @@ module.exports = {
     "pacts/.*",
     "coverage/",
     "src/logger/*",
+    "src/tracer/*",
+    "src/util/opentracing/*",
   ],
   watchPathIgnorePatterns: [
     "node_modules/",

@@ -231,14 +231,23 @@ describe('calculator.controller', () => {
 
     describe("running WITHOUT an available converter service or mock", () => {
         describe("when given a bogus operator", () => {
-            it('returns 404', async () => {
+            it('returns 404 before it needs a converter', async () => {
                 await supertest(app).get('/calculator/bogus').then((response) => {
                     expect(response.status).toBe(404);
                     expect(response.text).toContain('NotFoundError');  // Error page
                 })
             });
-            it('returns 500 when it cannot reach converter', async () => {
+        });
+        describe("when trying to reach the converter", () => {
+            it('returns 500 on fail to-number', async () => {
                 await supertest(app).get('/calculator/add?operands=I,I').then((response) => {
+                    expect(response.status).toBe(500);
+                    expect(response.text).toContain('InternalServerError');  // Error page
+                })
+            });
+            it('also returns 500 on fail to-roman', async () => {
+                // TODO: Should move this to converter tests (instead of calc)
+                await supertest(app).get('/converter/to-roman?value=1').then((response) => {
                     expect(response.status).toBe(500);
                     expect(response.text).toContain('InternalServerError');  // Error page
                 })
