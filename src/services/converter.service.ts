@@ -1,16 +1,15 @@
 import {ConverterApi} from './converter.api';
-import {ConverterServiceConfig} from '../config';
-import {Inject} from 'typescript-ioc';
 import axios, {AxiosResponse} from 'axios';
 import {BadRequestError, InternalServerError} from "typescript-rest/dist/server/model/errors";
 
-export class ConverterService implements ConverterApi {
-    @Inject
-    config: ConverterServiceConfig;
+const converterUrl = process.env.CONVERTER_URL || 'http://localhost:3002';
 
-  async toNumber(roman: string): Promise<number> {
+export class ConverterService implements ConverterApi {
+
+    async toNumber(roman: string): Promise<number> {
+
       try {
-          const axiosResponse: AxiosResponse = await axios.get(`http://localhost:3002/converter/to-number?value=${roman}`);
+          const axiosResponse: AxiosResponse = await axios.get(`${converterUrl}/converter/to-number?value=${roman}`);
           return parseInt(axiosResponse.data);
       } catch(error) {
           const e = {...error};
@@ -25,7 +24,7 @@ export class ConverterService implements ConverterApi {
 
   async toRoman(n: number): Promise<string> {
       try {
-          const axiosResponse: AxiosResponse = await axios.get(`http://${this.config.baseUrl}/converter/to-roman?value=${n}`);
+          const axiosResponse: AxiosResponse = await axios.get(`${converterUrl}/converter/to-roman?value=${n}`);
           return axiosResponse.data;
       } catch(error) {
           const e = {...error};
