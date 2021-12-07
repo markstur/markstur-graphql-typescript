@@ -35,4 +35,14 @@ export class ConverterService implements ConverterApi {
           }
       }
   }
+
+  async isHealthy(): Promise<boolean> {
+        try {
+            const axiosResponse: AxiosResponse = await axios.get(`${converterUrl}/converter/health`);
+            return axiosResponse.status === 200;
+        } catch(error) {
+            return false;
+        }
+  }
+
 }

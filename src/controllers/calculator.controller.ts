@@ -26,7 +26,11 @@ export class CalculatorController {
 
     const operators = ['add', 'sub', 'mult', 'div'];
     if (!operators.includes(operator)) {
-      throw new Errors.NotFoundError(`There is no operator "${operator}"`);
+      throw new Errors.NotFoundError(`There is no valid operator "${operator}"`);
+    }
+
+    if (!operands) {
+      throw new Errors.BadRequestError(`There is no operand"`);
     }
 
     const operandArray = operands.split(',');
@@ -39,6 +43,12 @@ export class CalculatorController {
     const numberArray = await promiseArray;
 
     const calculated = this.calculator.doMath(operator, numberArray);
+
+    // If the calculated result is negative or over 3999 then the API should return an error code 501 - Not Implemented.
+    if (calculated[0] > 3999 || calculated[0] < 0) {
+      throw new Errors.NotImplementedError(`Result ${calculated[0]} > 3999`);
+    }
+
     if (calculated.length == 3) {
       const promiseConverted = Promise.all([this.converter.toRoman(calculated[0]), this.converter.toRoman(calculated[1]), this.converter.toRoman(calculated[2])]);
       const converted = await promiseConverted;

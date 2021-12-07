@@ -100,48 +100,6 @@ describe('calculator.controller', () => {
                   }
               })
           )
-          promisedInteractions.push(
-              converterPact.addInteraction({
-                  state: baseState,
-                  uponReceiving: 'a GET request for converter/to-number with EMPTY VALUE',
-                  withRequest: {
-                      method: 'GET',
-                      path: `/converter/to-number`,
-                      query: `value=`,
-                  },
-                  willRespondWith: {
-                      status: 400,
-                  }
-              })
-          )
-          promisedInteractions.push(
-              converterPact.addInteraction({
-                  state: baseState,
-                  uponReceiving: `a GET request for converter/to-roman with a number > 3999`,
-                  withRequest: {
-                      method: 'GET',
-                      path: `/converter/to-roman`,
-                      query: `value=4005`,
-                  },
-                  willRespondWith: {
-                      status: 400,
-                  }
-              })
-          )
-          promisedInteractions.push(
-              converterPact.addInteraction({
-                  state: baseState,
-                  uponReceiving: `a GET request for converter/to-roman with a negative number`,
-                  withRequest: {
-                      method: 'GET',
-                      path: `/converter/to-roman`,
-                      query: `value=-5`,
-                  },
-                  willRespondWith: {
-                      status: 400,
-                  }
-              })
-          )
           await Promise.all(promisedInteractions);
       });
 
@@ -154,7 +112,7 @@ describe('calculator.controller', () => {
   });
 
   const smoothOperators = ['add', 'sub', 'mult', 'div'];
-  const badOperand = 'invalid-operand';
+  const badOperand = 'XIIII';
   const goodOperand = 'MMXXI';
 
   describe('when given calculator/<operator> with no operands', () => {
@@ -214,16 +172,16 @@ describe('calculator.controller', () => {
   });
 
     describe('when the result is too big or negative', () => {
-        it('returns 400 when > 3999', async () => {
+        it('returns 501 when > 3999', async () => {
             await supertest(app).get('/calculator/add?operands=MMMCMXCIX,VI').then((response) => {
-                expect(response.status).toBe(400);
-                expect(response.text).toContain('BadRequestError');  // Error page
+                expect(response.status).toBe(501);
+                expect(response.text).toContain('NotImplementedError');  // Error page
             })
         });
-        it('returns 400 when negative', async () => {
+        it('returns 501 when negative', async () => {
             await supertest(app).get('/calculator/sub?operands=I,VI').then((response) => {
-                expect(response.status).toBe(400);
-                expect(response.text).toContain('BadRequestError');  // Error page
+                expect(response.status).toBe(501);
+                expect(response.text).toContain('NotImplementedError');  // Error page
             })
         });
     });
