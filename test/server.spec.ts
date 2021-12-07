@@ -4,7 +4,7 @@ import * as http from 'http';
 import Mock = jest.Mock;
 
 describe('server', () => {
-  test('canary verifies test infrastructure', () => {
+  test.only('canary verifies test infrastructure', () => {
       expect(true).toEqual(true);
   });
 
