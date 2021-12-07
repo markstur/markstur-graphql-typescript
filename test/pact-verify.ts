@@ -7,6 +7,10 @@ import {buildApiServer} from "./helper";
 import * as config from '../package.json';
 import {ApiServer} from "../src/server";
 import superagent = require('superagent');
+import {Container, Scope} from "typescript-ioc";
+import {ConverterApi} from "../src/services";
+import {ConverterService} from "../src/services/converter.service";
+import {Errors} from "typescript-rest";
 
 const provider = config.config;
 const opts: VerifierOptions = config.pact as any;
@@ -20,15 +24,45 @@ const argv = yargs.options({
 
 const pactBrokerUrl = process.env.PACTBROKER_URL || opts.pactBrokerUrl;
 
+class MockNoConverter implements ConverterApi {
+    isHealthy(): Promise<boolean> {
+        return Promise.resolve(false);
+    }
+    toNumber(roman: string): Promise<number> {
+        throw Errors.InternalServerError;
+    }
+    toRoman(n: number): Promise<string> {
+        throw Errors.InternalServerError;
+    }
+}
+
+class MockConverter implements ConverterApi {
+    isHealthy(): Promise<boolean> {
+        return Promise.resolve(true);
+    }
+    toNumber(roman: string): Promise<number> {
+        return Promise.resolve(0);
+    }
+    toRoman(n: number): Promise<string> {
+        return Promise.resolve("nulla");
+    }
+}
+
 async function buildOptions(): Promise<VerifierOptions> {
 
     // add this to the Verifier opts
     const stateHandlers = {
         "base state": () => {
             console.log("BASE STATE: no setup needed");
+            Container.bind(ConverterApi).scope(Scope.Singleton).to(ConverterService);
         },
-        "other state": () => {
-            console.log("OTHER STATE: setup here when needed");
+        "WITH CONVERTER": () => {
+            console.log("A Mock converter will be used.");
+            Container.bind(ConverterApi).scope(Scope.Singleton).to(MockConverter);
+        },
+        "WITHOUT CONVERTER": () => {
+            console.log("Expect errors and delays with any converter call.");
+            Container.bind(ConverterApi).scope(Scope.Singleton).to(MockNoConverter);
         },
     }
 
