@@ -43,12 +43,12 @@ describe('calculator.controller', () => {
               '3000': 'MMM',
           }
           const r2n = {
-              'I': 1,
-              'V': 5,
-              'C': 100,
-              'VI': 6,
-              'MMXXI': 2021,
-              'MMMCMXCIX': 3999,
+              'I': '1',
+              'V': '5',
+              'C': '100',
+              'VI': '6',
+              'MMXXI': '2021',
+              'MMMCMXCIX': '3999',
           }
           const baseState = 'base state';
           const promisedInteractions = [];
