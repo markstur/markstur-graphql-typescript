@@ -51,7 +51,7 @@
     "class-validator": "^0.13.1",
     "cls-hooked": "^4.2.2",
     "cors": "^2.8.5",
-    "express-pino-logger": "^6.0.0",
+    "express-pino-logger": "^7.0.0",
     "graphql": "^15.5.3",
     "jaeger-client": "^3.18.1",
     "opentracing": "^0.14.5",
