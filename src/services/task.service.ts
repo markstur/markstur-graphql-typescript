@@ -1,10 +1,10 @@
-import {Inject} from 'typescript-ioc';
+import { Inject } from 'typescript-ioc';
 
-import {TaskApi} from './task.api';
-import {TaskModel} from '../models';
-import {timer} from '../util';
-import {tasks} from './data';
-import {LoggerApi} from '../logger';
+import { TaskApi } from './task.api';
+import { TaskModel } from '../models';
+import { timer } from '../util';
+import { tasks } from './data';
+import { LoggerApi } from '../logger';
 
 export class TaskServiceConfig {
   get timeout(): number {
@@ -32,22 +32,24 @@ export class TaskService implements TaskApi {
     this.logger.info('Getting tasks for project: ' + projectId);
 
     return timer(
-      tasks.filter(task => task.project_id === projectId),
-      this.config.timeout);
+      tasks.filter((task) => task.project_id === projectId),
+      this.config.timeout
+    );
   }
 
   async getTask(id: number): Promise<TaskModel | undefined> {
     this.logger.info('Getting task: ' + id);
 
     return timer<TaskModel | undefined>(
-      tasks.find(task => task.id === id),
-      this.config.timeout);
+      tasks.find((task) => task.id === id),
+      this.config.timeout
+    );
   }
 
   async markAsCompleted(taskId: number): Promise<TaskModel> {
     this.logger.info('Marking task completed: ' + taskId);
 
-    const task = tasks.find(t => {
+    const task = tasks.find((t) => {
       return t.id === taskId;
     });
 
@@ -63,5 +65,4 @@ export class TaskService implements TaskApi {
 
     return timer(task, this.config.timeout);
   }
-
 }

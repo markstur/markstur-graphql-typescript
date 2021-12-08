@@ -1,9 +1,8 @@
-import {Container} from 'typescript-ioc';
+import { Container } from 'typescript-ioc';
 
-import {HelloWorldService} from '../../src/services/hello-world.service';
+import { HelloWorldService } from '../../src/services/hello-world.service';
 
-describe('Hello World service', () =>{
-
+describe('Hello World service', () => {
   let service: HelloWorldService;
   beforeAll(() => {
     service = Container.get(HelloWorldService);
@@ -25,6 +24,6 @@ describe('Hello World service', () =>{
       test('then return "Hello, World!"', async () => {
         expect(await service.greeting()).toEqual('Hello, World!');
       });
-    })
+    });
   });
 });

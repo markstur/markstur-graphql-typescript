@@ -1,10 +1,10 @@
-import {Inject} from 'typescript-ioc';
+import { Inject } from 'typescript-ioc';
 
-import {ProjectApi} from './project.api';
-import {ProjectModel} from '../models';
-import {timer} from '../util';
-import {projects} from './data';
-import {LoggerApi} from '../logger';
+import { ProjectApi } from './project.api';
+import { ProjectModel } from '../models';
+import { timer } from '../util';
+import { projects } from './data';
+import { LoggerApi } from '../logger';
 
 export class ProjectServiceConfig {
   get timeout(): number {
@@ -25,24 +25,24 @@ export class ProjectService implements ProjectApi {
   async listProjects(): Promise<ProjectModel[]> {
     this.logger.info('Listing projects');
 
-    return timer(
-      projects.slice(0),
-      this.config.timeout);
+    return timer(projects.slice(0), this.config.timeout);
   }
 
   async getProject(name: string): Promise<ProjectModel | undefined> {
     this.logger.info('Getting project: ' + name);
 
     return timer(
-      projects.find(project => project.name === name),
-      this.config.timeout);
+      projects.find((project) => project.name === name),
+      this.config.timeout
+    );
   }
 
   async getProjectById(id: number): Promise<ProjectModel | undefined> {
     this.logger.info('Getting project by id: ' + id);
 
     return timer(
-      projects.find(project => project.id === id),
-      this.config.timeout);
+      projects.find((project) => project.id === id),
+      this.config.timeout
+    );
   }
 }

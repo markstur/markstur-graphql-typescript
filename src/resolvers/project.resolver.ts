@@ -1,25 +1,26 @@
-import {Inject} from 'typescript-ioc';
-import {Arg, FieldResolver, Query, Resolver, Root} from 'type-graphql';
+/* eslint-disable */
+import { Inject } from 'typescript-ioc';
+import { Arg, FieldResolver, Query, Resolver, Root } from 'type-graphql';
 
-import {Project} from '../schemas';
-import {ProjectModel, TaskModel} from '../models';
-import {resolverManager} from './_resolver-manager';
-import {ProjectApi, TaskApi} from '../services';
+import { Project } from '../schemas';
+import { ProjectModel, TaskModel } from '../models';
+import { resolverManager } from './_resolver-manager';
+import { ProjectApi, TaskApi } from '../services';
 
-@Resolver(of => Project)
+@Resolver((of) => Project)
 export class ProjectResolver {
   @Inject
   projectService: ProjectApi;
   @Inject
   taskService: TaskApi;
 
-  @Query(returns => [Project])
+  @Query((returns) => [Project])
   async projects(): Promise<ProjectModel[]> {
     return this.projectService.listProjects();
   }
 
-  @Query(returns => Project, { nullable: true })
-  async project(@Arg("name") name: string): Promise<ProjectModel | undefined> {
+  @Query((returns) => Project, { nullable: true })
+  async project(@Arg('name') name: string): Promise<ProjectModel | undefined> {
     return this.projectService.getProject(name);
   }
 
