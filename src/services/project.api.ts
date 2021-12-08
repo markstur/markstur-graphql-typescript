@@ -1,4 +1,4 @@
-import {ProjectModel} from '../models';
+import { ProjectModel } from '../models';
 
 export abstract class ProjectApi {
   abstract listProjects(): Promise<ProjectModel[]>;

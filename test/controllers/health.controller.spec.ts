@@ -1,11 +1,12 @@
-import {Application} from 'express';
-import {default as request} from 'supertest';
-import {Errors} from 'typescript-rest';
+import { Application } from 'express';
+import supertest from 'supertest';
+import { Errors } from 'typescript-rest';
 
-import {ConverterApi} from "../../src/services";
-import {buildApiServer} from '../helper';
-import {Container, Scope} from "typescript-ioc";
+import { ConverterApi } from '../../src/services';
+import { buildApiServer } from '../helper';
+import { Container, Scope } from 'typescript-ioc';
 
+/* eslint-disable */
 class MockNoConverter implements ConverterApi {
   isHealthy(): Promise<boolean> {
     return Promise.resolve(false);
@@ -26,24 +27,24 @@ class MockConverter implements ConverterApi {
     return Promise.resolve(0);
   }
   toRoman(n: number): Promise<string> {
-    return Promise.resolve("nulla");
+    return Promise.resolve('nulla');
   }
 }
+/* eslint-enable */
 
 describe('health.controller', () => {
-
   let app: Application;
   let apiServer;
 
   beforeEach(async () => {
     apiServer = buildApiServer();
-    expect(await apiServer.start()).toBe(apiServer);
+    await apiServer.start();
 
     app = apiServer.getApp();
   });
 
   afterEach(async () => {
-    expect(await apiServer.stop()).toEqual(true);
+    await apiServer.stop();
   });
 
   test('canary validates test infrastructure', () => {
@@ -57,23 +58,24 @@ describe('health.controller', () => {
 
     describe('Given /health', () => {
       test('should return 200 status', () => {
-        return request(app).get('/health').expect(200);
+        return supertest(app).get('/health').expect(200);
       });
 
       test('should return {status: "DOWN:}', () => {
-        return request(app).get('/health').expect(
-            {
-              status: 'UP',
-              checks: [
-                {
-                  name: 'converterHealth',
-                  status: 'UP',
-                }]
-            });
+        return supertest(app)
+          .get('/health')
+          .expect({
+            status: 'UP',
+            checks: [
+              {
+                name: 'converterHealth',
+                status: 'UP',
+              },
+            ],
+          });
       });
     });
-
-  })
+  });
 
   describe('WITHOUT converter', () => {
     beforeEach(async () => {
@@ -85,22 +87,19 @@ describe('health.controller', () => {
     });
 
     describe('Given /health', () => {
-      test('should return 200 status', () => {
-        return request(app).get('/health').expect(200);
-      });
-
-      test('should return {status: "DOWN:}', () => {
-        return request(app).get('/health').expect(
-            {
-              status: 'DOWN',
-              checks: [
-                {
-                  name: 'converterHealth',
-                  status: 'DOWN',
-                }]
-            });
+      test('should return 200 and {status: "DOWN:}', async () => {
+        await supertest(app)
+          .get('/health')
+          .expect(200, {
+            status: 'DOWN',
+            checks: [
+              {
+                name: 'converterHealth',
+                status: 'DOWN',
+              },
+            ],
+          });
       });
     });
-
-  })
+  });
 });

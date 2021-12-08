@@ -1,5 +1,6 @@
-import {Container} from 'typescript-ioc';
-import {NonEmptyArray} from 'type-graphql/dist/interfaces/NonEmptyArray';
+/* eslint-disable */
+import { Container } from 'typescript-ioc';
+import { NonEmptyArray } from 'type-graphql/dist/interfaces/NonEmptyArray';
 
 export abstract class ResolverManager {
   abstract registerResolver(resolver): any;
@@ -18,4 +19,5 @@ class ResolverManagerImpl implements ResolverManager {
   }
 }
 
-export const resolverManager: ResolverManager = Container.get(ResolverManagerImpl);
+export const resolverManager: ResolverManager =
+  Container.get(ResolverManagerImpl);

@@ -1,9 +1,9 @@
-import {Container} from 'typescript-ioc';
+import { Container } from 'typescript-ioc';
 
-import {ProjectApi, TaskApi} from '../../src/services';
-import {ProjectResolver} from '../../src/resolvers';
-import {ProjectModel} from '../../src/models';
-import {mockProjectApiProvider, mockTaskApiProvider} from './test-helpers';
+import { ProjectApi, TaskApi } from '../../src/services';
+import { ProjectResolver } from '../../src/resolvers';
+import { ProjectModel } from '../../src/models';
+import { mockProjectApiProvider, mockTaskApiProvider } from './test-helpers';
 import Mock = jest.Mock;
 
 describe('project.resolver', () => {
@@ -25,26 +25,25 @@ describe('project.resolver', () => {
   });
 
   describe('projects()', () => {
-    const expectedResult = [{id: 1, name: 'test'}];
+    const expectedResult = [{ id: 1, name: 'test' }];
     let mock: Mock;
 
     beforeEach(() => {
-      mock = (projectService.listProjects as Mock);
+      mock = projectService.listProjects as Mock;
       mock.mockResolvedValue(expectedResult);
     });
 
     test('should return value from projectService.listProjects()', async () => {
-
       expect(await classUnderTest.projects()).toBe(expectedResult);
     });
   });
 
   describe('project(name:)', () => {
-    const expectedResult = {id: 1, name: 'test'};
+    const expectedResult = { id: 1, name: 'test' };
     let mock: Mock;
 
     beforeEach(() => {
-      mock = (projectService.getProject as Mock);
+      mock = projectService.getProject as Mock;
       mock.mockResolvedValue(expectedResult);
     });
 
@@ -58,18 +57,20 @@ describe('project.resolver', () => {
   });
 
   describe('tasks(projectData:)', () => {
-    const expectedResult = [{id: 1, title: 'test'}];
+    const expectedResult = [{ id: 1, title: 'test' }];
     let mock: Mock;
 
     beforeEach(() => {
-      mock = (taskService.getTasksForProject as Mock);
+      mock = taskService.getTasksForProject as Mock;
       mock.mockResolvedValue(expectedResult);
     });
 
     test('should return value from taskService.getTasksForProject(id:)', async () => {
       const projectId = 99;
 
-      expect(await classUnderTest.tasks({id: projectId} as ProjectModel)).toBe(expectedResult);
+      expect(
+        await classUnderTest.tasks({ id: projectId } as ProjectModel)
+      ).toBe(expectedResult);
 
       expect(mock.mock.calls[0][0]).toEqual(projectId);
     });

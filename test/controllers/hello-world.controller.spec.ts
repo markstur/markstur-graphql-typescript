@@ -1,35 +1,35 @@
-import { doesNotMatch } from 'assert';
-import {Application} from 'express';
-import {default as request} from 'supertest';
-import {Container, Scope} from 'typescript-ioc';
+import { Application } from 'express';
+import supertest from 'supertest';
+import { Container, Scope } from 'typescript-ioc';
 
-import {HelloWorldApi} from '../../src/services';
-import {buildApiServer} from '../helper';
+import { HelloWorldApi } from '../../src/services';
+import { buildApiServer } from '../helper';
 
 class MockHelloWorldService implements HelloWorldApi {
   greeting = jest.fn().mockName('greeting');
 }
 
 describe('hello-world.controller', () => {
-
   let apiServer;
   let app: Application;
   let mockGreeting: jest.Mock;
 
   beforeEach(async () => {
     apiServer = buildApiServer();
-    expect(await apiServer.start()).toBe(apiServer);
+    await apiServer.start();
 
     app = apiServer.getApp();
 
-    Container.bind(HelloWorldApi).scope(Scope.Singleton).to(MockHelloWorldService);
+    Container.bind(HelloWorldApi)
+      .scope(Scope.Singleton)
+      .to(MockHelloWorldService);
 
     const mockService: HelloWorldApi = Container.get(HelloWorldApi);
     mockGreeting = mockService.greeting as jest.Mock;
   });
 
   afterEach(async () => {
-    expect(await apiServer.stop()).toEqual(true);
+    await apiServer.stop();
   });
 
   test('canary validates test infrastructure', () => {
@@ -43,8 +43,13 @@ describe('hello-world.controller', () => {
       mockGreeting.mockReturnValueOnce(Promise.resolve(expectedResponse));
     });
 
-    test('should return "Hello, World!"', done => {
-      request(app).get('/hello').expect(200).expect(expectedResponse, done);
+    test('should return "Hello, World!"', async () => {
+      await supertest(app)
+        .get('/hello')
+        .expect(200)
+        .then((res) => {
+          expect(res.text).toBe(expectedResponse);
+        });
     });
   });
 
@@ -52,12 +57,16 @@ describe('hello-world.controller', () => {
     const name = 'Johnny';
 
     beforeEach(() => {
-      mockGreeting.mockImplementation(name => name);
+      mockGreeting.mockImplementation((name) => name);
     });
 
-    test('should return "Hello, Johnny!"', done => {
-      request(app).get(`/hello/${name}`).expect(200).expect(name, done);
+    test('should return "Hello, Johnny!"', async () => {
+      await supertest(app)
+        .get(`/hello/${name}`)
+        .then((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toBe(name);
+        });
     });
   });
-
 });

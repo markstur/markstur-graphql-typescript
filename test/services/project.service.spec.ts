@@ -1,17 +1,18 @@
-import {Container} from 'typescript-ioc';
-import {ProjectServiceConfig, ProjectService} from '../../src/services/project.service';
+import { Container } from 'typescript-ioc';
+import {
+  ProjectServiceConfig,
+  ProjectService,
+} from '../../src/services/project.service';
 
 describe('project.service', () => {
   test('canary verifies test infrastructure', () => {
-      expect(true).toEqual(true);
+    expect(true).toEqual(true);
   });
 
   describe('ProjectService', () => {
     let service: ProjectService;
     beforeEach(() => {
-      Container
-        .bind(ProjectServiceConfig)
-        .factory(() => ({timeout: 2}));
+      Container.bind(ProjectServiceConfig).factory(() => ({ timeout: 2 }));
 
       service = Container.get(ProjectService);
     });

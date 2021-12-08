@@ -1,3 +1,3 @@
 export class ConverterServiceConfig {
-    baseUrl: string;
+  baseUrl: string;
 }

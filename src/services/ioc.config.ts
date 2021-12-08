@@ -1,14 +1,14 @@
-import {ContainerConfiguration, Scope} from 'typescript-ioc';
-import {HelloWorldApi} from './hello-world.api';
-import {HelloWorldService} from './hello-world.service';
-import {CalculatorApi} from './calculator.api';
-import {CalculatorService} from './calculator.service';
-import {ConverterApi} from './converter.api';
-import {ConverterService} from './converter.service';
-import {ProjectApi} from './project.api';
-import {ProjectService} from './project.service';
-import {TaskApi} from './task.api';
-import {TaskService} from './task.service';
+import { ContainerConfiguration, Scope } from 'typescript-ioc';
+import { HelloWorldApi } from './hello-world.api';
+import { HelloWorldService } from './hello-world.service';
+import { CalculatorApi } from './calculator.api';
+import { CalculatorService } from './calculator.service';
+import { ConverterApi } from './converter.api';
+import { ConverterService } from './converter.service';
+import { ProjectApi } from './project.api';
+import { ProjectService } from './project.service';
+import { TaskApi } from './task.api';
+import { TaskService } from './task.service';
 
 const config: ContainerConfiguration[] = [
   {

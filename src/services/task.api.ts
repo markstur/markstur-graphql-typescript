@@ -1,4 +1,4 @@
-import {TaskModel} from '../models';
+import { TaskModel } from '../models';
 
 export abstract class TaskApi {
   abstract listTasks(): Promise<TaskModel[]>;

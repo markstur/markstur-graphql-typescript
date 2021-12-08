@@ -1,10 +1,9 @@
-import {GET, Path, QueryParam} from 'typescript-rest';
-import {Inject} from 'typescript-ioc';
-import {ConverterApi} from '../services';
+import { GET, Path, QueryParam } from 'typescript-rest';
+import { Inject } from 'typescript-ioc';
+import { ConverterApi } from '../services';
 
 @Path('/converter')
 export class ConverterController {
-
   @Inject
   service: ConverterApi;
 

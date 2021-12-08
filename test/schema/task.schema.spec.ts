@@ -1,5 +1,6 @@
+/* eslint-disable */
 import * as EasyGraphQLTester from 'easygraphql-tester';
-import {buildGraphqlSchema} from '../../src/schema';
+import { buildGraphqlSchema } from '../../src/schema';
 
 describe.skip('task schema', () => {
   test('canary test verifies test infrastructure', () => {
@@ -68,7 +69,7 @@ describe.skip('task schema', () => {
             title
             completed
           }
-        }`
+        }`;
       });
     });
   });

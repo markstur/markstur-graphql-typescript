@@ -1,9 +1,10 @@
-import {Container} from 'typescript-ioc';
+/* eslint-disable */
+import { Container } from 'typescript-ioc';
 
-import {ProjectApi, TaskApi} from '../../src/services';
-import {TaskResolver} from '../../src/resolvers';
-import {ProjectModel, TaskModel} from '../../src/models';
-import {mockProjectApiProvider, mockTaskApiProvider} from './test-helpers';
+import { ProjectApi, TaskApi } from '../../src/services';
+import { TaskResolver } from '../../src/resolvers';
+import { ProjectModel, TaskModel } from '../../src/models';
+import { mockProjectApiProvider, mockTaskApiProvider } from './test-helpers';
 import Mock = jest.Mock;
 
 describe('task.resolver', () => {
@@ -25,26 +26,25 @@ describe('task.resolver', () => {
   });
 
   describe('tasks()', () => {
-    const expectedResult = [{id: 1, title: 'test'}];
+    const expectedResult = [{ id: 1, title: 'test' }];
     let mock: Mock;
 
     beforeEach(() => {
-      mock = (taskService.listTasks as Mock);
+      mock = taskService.listTasks as Mock;
       mock.mockResolvedValue(expectedResult);
     });
 
     test('should return value from taskService.listTasks()', async () => {
-
       expect(await classUnderTest.tasks()).toBe(expectedResult);
     });
   });
 
   describe('task(id:)', () => {
-    const expectedResult = {id: 1, title: 'test'};
+    const expectedResult = { id: 1, title: 'test' };
     let mock: Mock;
 
     beforeEach(() => {
-      mock = (taskService.getTask as Mock);
+      mock = taskService.getTask as Mock;
       mock.mockResolvedValue(expectedResult);
     });
 
@@ -58,36 +58,40 @@ describe('task.resolver', () => {
   });
 
   describe('markTaskAsCompleted(id:)', () => {
-    const expectedResult = {id: 1, title: 'test'};
+    const expectedResult = { id: 1, title: 'test' };
     let mock: Mock;
 
     beforeEach(() => {
-      mock = (taskService.markAsCompleted as Mock);
+      mock = taskService.markAsCompleted as Mock;
       mock.mockResolvedValue(expectedResult);
     });
 
     test('should return value from taskService.markAsCompleted(id:)', async () => {
       const taskId = 1;
 
-      expect(await classUnderTest.markTaskAsCompleted(taskId)).toBe(expectedResult);
+      expect(await classUnderTest.markTaskAsCompleted(taskId)).toBe(
+        expectedResult
+      );
 
       expect(mock.mock.calls[0][0]).toEqual(taskId);
     });
   });
 
   describe('project(taskData:)', () => {
-    const expectedResult = {id: 1, name: 'test'};
+    const expectedResult = { id: 1, name: 'test' };
     let mock: Mock;
 
     beforeEach(() => {
-      mock = (projectService.getProjectById as Mock);
+      mock = projectService.getProjectById as Mock;
       mock.mockResolvedValue(expectedResult);
     });
 
     test('should return value from projectService.getProjectById(id:)', async () => {
       const projectId = 1;
 
-      expect(await classUnderTest.project({project_id: projectId} as TaskModel)).toBe(expectedResult);
+      expect(
+        await classUnderTest.project({ project_id: projectId } as TaskModel)
+      ).toBe(expectedResult);
 
       expect(mock.mock.calls[0][0]).toEqual(projectId);
     });

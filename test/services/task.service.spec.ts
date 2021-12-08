@@ -1,17 +1,19 @@
-import {Container} from 'typescript-ioc';
-import {TaskService, TaskServiceConfig} from '../../src/services/task.service';
+/* eslint-disable */
+import { Container } from 'typescript-ioc';
+import {
+  TaskService,
+  TaskServiceConfig,
+} from '../../src/services/task.service';
 
 describe('task.service', () => {
   test('canary verifies test infrastructure', () => {
-      expect(true).toEqual(true);
+    expect(true).toEqual(true);
   });
 
   describe('TaskService', () => {
     let service: TaskService;
     beforeEach(() => {
-      Container
-        .bind(TaskServiceConfig)
-        .factory(() => ({timeout: 2}));
+      Container.bind(TaskServiceConfig).factory(() => ({ timeout: 2 }));
 
       service = Container.get(TaskService);
     });
@@ -72,7 +74,9 @@ describe('task.service', () => {
         test('then mark task as completed and return task', async () => {
           const taskId = 2;
 
-          expect((await service.markAsCompleted(taskId)).completed).toEqual(true);
+          expect((await service.markAsCompleted(taskId)).completed).toEqual(
+            true
+          );
 
           expect((await service.getTask(taskId)).completed).toEqual(true);
         });
@@ -81,10 +85,13 @@ describe('task.service', () => {
       context('when task is already completed', () => {
         test('then throw an error', async () => {
           const taskId = 1;
-          return service.markAsCompleted(taskId)
-            .then(task => fail('should throw error'))
-            .catch(err => {
-              expect(err.message).toEqual(`Task with id ${taskId} is already completed`);
+          return service
+            .markAsCompleted(taskId)
+            .then((task) => fail('should throw error'))
+            .catch((err) => {
+              expect(err.message).toEqual(
+                `Task with id ${taskId} is already completed`
+              );
               return;
             });
         });
@@ -93,10 +100,13 @@ describe('task.service', () => {
       context('when task could not be found', () => {
         test('then throw an error', async () => {
           const taskId = 1000;
-          return service.markAsCompleted(taskId)
-            .then(task => fail('should throw error'))
-            .catch(err => {
-              expect(err.message).toEqual(`Couldn't find the task with id ${taskId}`);
+          return service
+            .markAsCompleted(taskId)
+            .then((task) => fail('should throw error'))
+            .catch((err) => {
+              expect(err.message).toEqual(
+                `Couldn't find the task with id ${taskId}`
+              );
               return;
             });
         });

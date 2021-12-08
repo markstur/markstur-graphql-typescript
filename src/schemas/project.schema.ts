@@ -1,15 +1,16 @@
-import {Field, Int, ObjectType} from 'type-graphql';
+/* eslint-disable */
+import { Field, Int, ObjectType } from 'type-graphql';
 
-import {Task} from './task.schema';
+import { Task } from './task.schema';
 
 @ObjectType()
 export class Project {
-  @Field(type => Int)
+  @Field((type) => Int)
   id: number;
 
   @Field()
   name: string;
 
-  @Field(type => [Task])
+  @Field((type) => [Task])
   tasks: Task[];
 }

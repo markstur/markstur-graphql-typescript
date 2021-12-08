@@ -1,5 +1,6 @@
+/* eslint-disable */
 import * as EasyGraphQLTester from 'easygraphql-tester';
-import {buildGraphqlSchema} from '../../src/schema';
+import { buildGraphqlSchema } from '../../src/schema';
 
 describe.skip('project schema', () => {
   test('canary verifies test infrastructure', () => {

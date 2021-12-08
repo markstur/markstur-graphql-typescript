@@ -1,7 +1,10 @@
-import {BuildContext, ObjectFactory} from 'typescript-ioc';
-import {ProjectApi, TaskApi} from '../../src/services';
+/* eslint-disable */
+import { BuildContext, ObjectFactory } from 'typescript-ioc';
+import { ProjectApi, TaskApi } from '../../src/services';
 
-export const mockProjectApiProvider: ObjectFactory = (context?: BuildContext) => {
+export const mockProjectApiProvider: ObjectFactory = (
+  context?: BuildContext
+) => {
   const projectApi: ProjectApi = {
     listProjects: jest.fn() as any,
     getProjectById: jest.fn() as any,
