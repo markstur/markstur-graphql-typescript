@@ -1,32 +1,27 @@
-
 <p align="center">
-    <a href="http://kitura.io/">
-        <img src="https://landscape.cncf.io/logos/ibm-member.svg" height="100" alt="IBM Cloud">
-    </a>
-</p>
-
-<p align="center">
-    <a href="https://cloud.ibm.com">
-    <img src="https://img.shields.io/badge/IBM%20Cloud-powered-blue.svg" alt="IBM Cloud">
-    </a>
     <img src="https://img.shields.io/badge/platform-node-lightgrey.svg?style=flat" alt="platform">
     <img src="https://img.shields.io/badge/license-Apache2-blue.svg?style=flat" alt="Apache 2">
 </p>
 
-# Graphql/Typescript Code Pattern
+# Roman numeral calculator
 
-This is a based on the template repository for a Typescript-based Graphql micro-service.
+## API Documentation
+* /api-docs
 
-This app contains an opinionated set of components for modern web development, including:
+## REST services for Roman numberal calculator
 
+* /calculator/{operator}
+    
+Also includes:
 
-## Getting started
-
-1. Clone the newly created template to your computer
+* /converter (proxies to Roman numeral converter)
+* /health
+* /hello
+* /graphql (from template-graphql-typescript)
 
 ## Features
 
-The starter kit provides the following features:
+Based on the starter kit with the following features:
 
 * Graphql server from [apollo-server-express](https://github.com/apollographql/apollo-server/tree/main/packages/apollo-server-express)
 * Graphql decorators from [type-graphql](https://www.npmjs.com/package/type-graphql)
@@ -36,36 +31,16 @@ The starter kit provides the following features:
 - Pact testing [Pact.io](https://docs.pact.io/)
 - DevOps pipeline
 
-### Deploying
-
-After you have created a new git repo from this git template, remember to rename the project.
-Edit `package.json` and change the default name to the name you used to create the template.
-
-Make sure you are logged into the IBM Cloud using the IBM Cloud CLI and have access
-to you development cluster. If you are using OpenShift make sure you have logged into OpenShift CLI on the command line.
-
-```$bash
-npm i -g @ibmgaragecloud/cloud-native-toolkit-cli
-```
-
-Use the IBM Garage for Cloud CLI to register the GIT Repo with Jenkins
-```$bash
-igc pipeline
-```
-
 ### Building Locally
-
-To get started building this application locally, you can either run the application natively or use the [IBM Cloud Developer Tools](https://cloud.ibm.com/docs/cli?topic=cloud-cli-getting-started) for containerization and easy deployment to IBM Cloud.
 
 #### Native Application Development
 
-Install the latest [Node.js](https://nodejs.org/en/download/) 6+ LTS version.
+Install the latest [Node.js](https://nodejs.org/en/download/) 16+ LTS version.
 
 Once the Node toolchain has been installed, you can download the project dependencies with:
 
 ```bash
 npm install
-cd client; npm install; cd ..
 npm run build
 npm run start
 ```
