@@ -54,8 +54,8 @@ async function buildOptions(): Promise<VerifierOptions> {
   // add this to the Verifier opts
   const stateHandlers = {
     'base state': () => {
-      console.log('BASE STATE: no setup needed');
-      Container.bind(ConverterApi).scope(Scope.Singleton).to(ConverterService);
+      console.log('BASE STATE: Using MockNoConverter');
+      Container.bind(ConverterApi).scope(Scope.Singleton).to(MockNoConverter);
     },
     'WITH CONVERTER': () => {
       console.log('A Mock converter will be used.');
