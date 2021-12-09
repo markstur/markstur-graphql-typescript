@@ -23,7 +23,7 @@ export class CalculatorController {
   @GET
   async operate(
     @PathParam('operator') operator: string,
-    @QueryParam('operands') operands: string = ''
+    @QueryParam('operands') operands: string
   ): Promise<string> {
     const operators = ['add', 'sub', 'mult', 'div'];
     if (!operators.includes(operator)) {

@@ -43,6 +43,21 @@ export class ApiServer {
     this.logger.apply(this.app);
     this.app.use(cors());
 
+    if (!apiContext || apiContext === '/') {
+      this.app.use(
+          express.static(path.join(process.cwd(), 'public'), {
+            maxAge: 31557600000,
+          })
+      );
+    } else {
+      this.app.use(
+          apiContext,
+          express.static(path.join(process.cwd(), 'public'), {
+            maxAge: 31557600000,
+          })
+      );
+    }
+
     const apiRouter: express.Router = express.Router();
     Server.loadServices(apiRouter, ['controllers/*'], __dirname);
 
