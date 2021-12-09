@@ -1,14 +1,18 @@
 import { ConverterApi } from './converter.api';
+import { ConverterServiceConfig} from "../config";
 import axios, { AxiosResponse } from 'axios';
 import {
   BadRequestError,
   InternalServerError,
 } from 'typescript-rest/dist/server/model/errors';
-
-const converterUrl = process.env.CONVERTER_URL || 'http://localhost:3002';
+import {Inject} from "typescript-ioc";
 
 export class ConverterService implements ConverterApi {
+  @Inject
+  config: ConverterServiceConfig;
+
   async toNumber(roman: string): Promise<number> {
+    const converterUrl = this.config.baseUrl;
     try {
       const axiosResponse: AxiosResponse = await axios.get(
         `${converterUrl}/converter/to-number?value=${roman}`
@@ -25,6 +29,7 @@ export class ConverterService implements ConverterApi {
   }
 
   async toRoman(n: number): Promise<string> {
+    const converterUrl = this.config.baseUrl;
     try {
       const axiosResponse: AxiosResponse = await axios.get(
         `${converterUrl}/converter/to-roman?value=${n}`
@@ -41,6 +46,7 @@ export class ConverterService implements ConverterApi {
 
   async isHealthy(): Promise<boolean> {
     try {
+      const converterUrl = this.config.baseUrl;
       const axiosResponse: AxiosResponse = await axios.get(
         `${converterUrl}/converter/health`
       );
