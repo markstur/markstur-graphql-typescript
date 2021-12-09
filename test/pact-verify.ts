@@ -61,7 +61,7 @@ async function buildOptions(): Promise<VerifierOptions> {
       console.log('A Mock converter will be used.');
       Container.bind(ConverterApi).scope(Scope.Singleton).to(MockConverter);
     },
-    'WITHOUT CONVERTER': () => {
+    'NO CONVERTER': () => {
       console.log('Expect errors and delays with any converter call.');
       Container.bind(ConverterApi).scope(Scope.Singleton).to(MockNoConverter);
     },
