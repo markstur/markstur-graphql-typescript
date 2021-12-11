@@ -8,7 +8,6 @@ import * as npmPackage from '../package.json';
 import { parseCsvString } from './util';
 import { LoggerApi } from './logger';
 import { TracerApi } from './tracer';
-import { opentracingMiddleware } from './util/opentracing/express-middleware';
 import fs = require('fs');
 import http = require('http');
 import path = require('path');
@@ -33,6 +32,7 @@ export class ApiServer {
 
   // private readonly app: express.Application;
   private server: http.Server = null;
+  private graphqlServer;
   public PORT: number = +process.env.PORT || npmPackage.config.port;
 
   constructor(
@@ -76,29 +76,32 @@ export class ApiServer {
     } else {
       this.app.use(apiContext, apiRouter);
     }
+    this.startGraphql();
+  }
 
-    new Promise<ApolloServer>(async (resolve, reject) => {
+  private async startGraphql() {
+    await new Promise<ApolloServer>(async (resolve, reject) => {
       try {
         const schema: GraphQLSchema = (await buildGraphqlSchema()) as any;
 
-        const graphqlServer = new ApolloServer({ schema });
-        await graphqlServer.start();
+        this.graphqlServer = new ApolloServer({schema});
+        await this.graphqlServer.start();
 
-        graphqlServer.applyMiddleware({ app: this.app });
+        this.graphqlServer.applyMiddleware({app: this.app});
 
-        resolve(graphqlServer);
+        resolve(this.graphqlServer);
       } catch (error) {
         reject(error);
       }
     })
-      .then((graphqlServer) => {
-        this.logger.info(
-          'Graphql server started: ' + graphqlServer.graphqlPath
-        );
-      })
-      .catch((error) => {
-        this.logger.error('Error starting graphql server', { error });
-      });
+        .then((graphqlServer) => {
+          this.logger.info(
+              'Graphql server started: ' + graphqlServer.graphqlPath
+          );
+        })
+        .catch((error) => {
+          this.logger.error('Error starting graphql server', {error});
+        });
   }
 
   /**
@@ -126,6 +129,7 @@ export class ApiServer {
    * @returns {Promise<boolean>}
    */
   public async stop(): Promise<boolean> {
+    if (this.graphqlServer) await this.graphqlServer.stop()
     return new Promise<boolean>((resolve) => {
       if (this.server) {
         this.server.close(() => {
