@@ -9,7 +9,6 @@ import { ApiServer } from '../src/server';
 import superagent = require('superagent');
 import { Container, Scope } from 'typescript-ioc';
 import { ConverterApi } from '../src/services';
-import { ConverterService } from '../src/services/converter.service';
 import { Errors } from 'typescript-rest';
 
 /* eslint-disable */
