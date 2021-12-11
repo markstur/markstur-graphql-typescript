@@ -1,11 +1,11 @@
 import { ConverterApi } from './converter.api';
-import { ConverterServiceConfig} from "../config";
+import { ConverterServiceConfig } from '../config';
 import axios, { AxiosResponse } from 'axios';
 import {
   BadRequestError,
   InternalServerError,
 } from 'typescript-rest/dist/server/model/errors';
-import {Inject} from "typescript-ioc";
+import { Inject } from 'typescript-ioc';
 
 export class ConverterService implements ConverterApi {
   @Inject
