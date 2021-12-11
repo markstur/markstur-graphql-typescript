@@ -29,7 +29,7 @@
     "lintfix:json": "eslint --fix . --ext .json",
     "lintfix:js": "eslint --fix . --ext .js",
     "lintfix:ts": "eslint --fix . --ext .ts",
-    "test": "jest --coverage --runInBand --detectOpenHandles",
+    "test": "jest --coverage --runInBand --detectOpenHandles && npm run lint",
     "test:forceExit": "jest --coverage --runInBand --forceExit",
     "tdd": "jest --watch",
     "prebuild": "npm run clean",
