@@ -21,14 +21,14 @@ describe('calculator.controller', () => {
   });
 
   describe('running WITH a MOCK converter service', () => {
-    const converterPort = process.env.CONVERTER_PORT || '9992';
+    const converterPort = +process.env.CONVERTER_PORT;
     let converterPact: Pact;
 
     beforeAll(async () => {
       converterPact = new Pact({
         consumer: 'markstur-calculator',
         provider: 'markstur-converter',
-        port: parseInt(converterPort),
+        port: converterPort,
         log: resolve(process.cwd(), 'logs', 'pact.log'),
         dir: resolve(process.cwd(), 'pacts'),
       });
